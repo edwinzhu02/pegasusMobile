@@ -4,7 +4,6 @@ import {
     createBottomTabNavigator,
     createStackNavigator,
     createSwitchNavigator,
-    createDrawerNavigator
 
 } from "react-navigation";
 import AuthLoading from './src/components/AuthLoading/AuthLoading'
@@ -16,11 +15,14 @@ import Profile from './src/components/Dashboard/Profile/Profile'
 import ChatList from "./src/components/Dashboard/Chat/ChatList/ChatList";
 import ContactList from './src/components/Dashboard/Chat/ContactList/ContactList'
 import CheckIn from './src/components/Dashboard/Session/CheckIn/CheckIn'
-
+import CheckOut from './src/components/Dashboard/Session/CheckOut/CheckOut'
+import Schedule from './src/components/Dashboard/Session/Schedule/Schedule'
 
 const SessionStack = createStackNavigator({
     SessionList: SessionList,
-    CheckIn: CheckIn
+    CheckIn: CheckIn,
+    CheckOut: CheckOut,
+    Schedule: Schedule
 })
 
 const ProfileStack = createStackNavigator({

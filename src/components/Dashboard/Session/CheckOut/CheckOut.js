@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import {View,StyleSheet,Text,TouchableOpacity,FlatList} from 'react-native'
 import {ListItem} from 'react-native-elements'
 
-export default class CheckIn extends Component{
+export default class CheckOut extends Component{
     static navigationOptions = {
-        title: 'Check In'
+        title: 'Check Out'
     };
 
     state={
@@ -104,7 +104,7 @@ export default class CheckIn extends Component{
         this.setState({location:{error: err.message}})
     }
 
-    CheckInHandler = () => {
+    CheckOutHandler = () => {
         console.log(this.state)
     }
 
@@ -130,9 +130,9 @@ export default class CheckIn extends Component{
                         Record for today check in: {this.state.recentRecordTime}
                     </Text>
                     <View style={styles.CircleContainer}>
-                        <TouchableOpacity onPress={()=>this.CheckInHandler()}>
+                        <TouchableOpacity onPress={()=>this.CheckOutHandler()}>
                             <View style={styles.CircleButton}>
-                                <Text style={styles.ButtonText}>Check In</Text>
+                                <Text style={styles.ButtonText}>Check Out</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

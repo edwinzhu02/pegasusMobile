@@ -42,6 +42,8 @@ export default class Login extends Component{
                 }
                 await AsyncStorage.setItem('token',result.Data.token)
                 await AsyncStorage.setItem('expires',result.Data.expires)
+                await AsyncStorage.setItem('firstname',result.Data.userdetails.firstname)
+                await AsyncStorage.setItem('lastname',result.Data.userdetails.lastname)
                 this.setState({visible:false})
                 this.props.navigation.navigate('App')
             })
