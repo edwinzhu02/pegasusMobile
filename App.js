@@ -17,13 +17,26 @@ import ContactList from './src/components/Dashboard/Chat/ContactList/ContactList
 import CheckIn from './src/components/Dashboard/Session/CheckIn/CheckIn'
 import CheckOut from './src/components/Dashboard/Session/CheckOut/CheckOut'
 import Schedule from './src/components/Dashboard/Session/Schedule/Schedule'
+import Feedback from './src/components/Dashboard/Session/Feedback/Feedback'
+import FeedbackRating from './src/components/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating'
+import FeedbackView from './src/components/Dashboard/Session/FeedbackView/FeedbackView'
+
 
 const SessionStack = createStackNavigator({
     SessionList: SessionList,
     CheckIn: CheckIn,
     CheckOut: CheckOut,
-    Schedule: Schedule
+    Schedule: Schedule,
+
+    //FeedBack
+    Feedback: Feedback,
+    FeedbackRating: FeedbackRating,
+    //
+
+    FeedbackView: FeedbackView
 })
+
+
 
 const ProfileStack = createStackNavigator({
     Profile: Profile

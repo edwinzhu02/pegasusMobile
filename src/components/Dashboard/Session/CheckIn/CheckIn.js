@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     CircleButton:{
-        height: 200,
-        width: 200,
+        height: 150,
+        width: 150,
         borderRadius:300,
         backgroundColor: 'white',
         justifyContent: 'center',

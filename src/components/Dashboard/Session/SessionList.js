@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,StyleSheet,Text,TouchableOpacity} from 'react-native'
+import {View,StyleSheet,Text,TouchableOpacity,Dimensions} from 'react-native'
 import { FlatGrid, SectionGrid } from 'react-native-super-grid';
 
 class SessionList extends Component{
@@ -11,19 +11,18 @@ class SessionList extends Component{
             { name: 'Check In', code: '#1abc9c',component: 'CheckIn' },
             { name: 'Check Out', code: '#2ecc71', component: 'CheckOut' },
             { name: 'Schedule', code: '#3498db', component: 'Schedule' },
-            // { name: 'Feedback', code: '#9b59b6' },
-            // { name: 'Release future', code: '#34495e' }, { name: 'Release future', code: '#16a085' },
+            { name: 'Feedback', code: '#9b59b6',component:'Feedback' },
+            { name: 'View Feedback', code: '#27ae60', component: 'FeedbackView' },
+            // { name: 'Release future', code: '#16a085' },
             // { name: 'Release future', code: '#27ae60' }, { name: 'Release future', code: '#2980b9' },
 
         ];
+        const width = Dimensions.get('window').width/3
         return (
             <FlatGrid
-                itemDimension={130}
+                itemDimension={width}
                 items={items}
                 style={styles.gridView}
-                // staticDimension={300}
-                // fixed
-                // spacing={20}
                 renderItem={({ item }) => (
                     <View>
                         <TouchableOpacity onPress={()=>this.props.navigation.navigate(item.component)}>
