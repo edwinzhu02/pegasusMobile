@@ -4,12 +4,11 @@ import {
     View,
     ListView,
     Text,
-    SafeAreaView, Button
+    SafeAreaView, Button,TouchableOpacity,
 } from 'react-native';
-
+console.disableYellowBox = true;
 import api from '../../../../util/api_simulator'
 import ChatItem from './ChatItem/ChatItem'
-import {Actions} from "react-native-router-flux";
 
 class ChatList extends Component{
     static navigationOptions = ({navigation}) =>( {
@@ -32,6 +31,8 @@ class ChatList extends Component{
             dataSource: ds.cloneWithRows(data)
         }
     }
+
+
     _renderMsgItem(msg) {
         let user = api.getUserInfo(msg.from);
         msg.text = msg.text.length > 25 ? msg.text.substring(0,23)+'...' : msg.text;
@@ -39,6 +40,9 @@ class ChatList extends Component{
             <ChatItem
                 user={user}
                 message={msg}
+                ToChatBox={()=>this.props.navigation.navigate("ChatBox",{
+                    name: user.name.first+" "+user.name.last
+                })}
             />
         );
     }
