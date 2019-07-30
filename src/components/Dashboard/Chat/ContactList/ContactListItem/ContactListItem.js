@@ -5,35 +5,42 @@ import {
     View,
     Image,
 } from 'react-native';
-
 import {RkConfig, RkButton, RkCard, RkText} from 'react-native-ui-kitten';
 
-export default class ChatItemClassic extends Component {
-    constructor(props){
-        super(props)
+
+
+
+
+export default class ContactListItem extends Component{
+
+    GetRoleName = (roleNum) => {
+        switch(roleNum){
+            case 1:
+                return 'staff'
+            case 2:
+                return 'learner'
+            case 3:
+                return 'teacher'
+            default:
+                return null
+        }
     }
 
-    render() {
-        let msg = this.props.message;
-        let user = this.props.user;
+    render(){
         return (
-            <TouchableOpacity onPress={this.props.ToChatBox}>
+            <TouchableOpacity onPress={this.props.navigation}>
                 <RkCard rkCardHeader style={styles.container}>
                     <View rkCardRow>
-                        <Image rkCardAvatarSmall source={user.avatar}/>
+                        <Image rkCardAvatarSmall source={require('../../../../../../img/avatars/boy.jpg')}/>
                         <View>
-                            <RkText rkCardTitle>{user.name.first} {user.name.last}</RkText>
-                            <RkText rkCardSubTitle style={styles.subtitle}>{msg.text}</RkText>
+                            <RkText rkCardTitle>{this.props.item.FirstName} {this.props.item.LastName}</RkText>
+                            <RkText rkCardSubTitle style={styles.subtitle}>{this.GetRoleName(this.props.item.role)}</RkText>
                         </View>
-                    </View>
-                    <View style={styles.timeContainer}>
-                        <RkText rkCardSubTitle>{msg.time}</RkText>
                     </View>
                 </RkCard>
             </TouchableOpacity>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
@@ -56,5 +63,3 @@ const styles = StyleSheet.create({
         marginTop: 5
     }
 });
-
-

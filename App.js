@@ -20,6 +20,7 @@ import Schedule from './src/components/Dashboard/Session/Schedule/Schedule'
 import Feedback from './src/components/Dashboard/Session/Feedback/Feedback'
 import FeedbackRating from './src/components/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating'
 import FeedbackView from './src/components/Dashboard/Session/FeedbackView/FeedbackView'
+import Chat from './src/components/Dashboard/Chat/Chat'
 
 
 const SessionStack = createStackNavigator({
@@ -48,6 +49,9 @@ const ChatStack = createStackNavigator({
     },
     ContactList: {
         screen: ContactList
+    },
+    ChatBox:{
+        screen: Chat
     }
 })
 
