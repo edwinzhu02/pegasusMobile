@@ -1,24 +1,23 @@
-import {StyleSheet} from 'react-native'
-import {RkConfig} from 'react-native-ui-kitten';
+import { StyleSheet } from "react-native";
+import { RkConfig } from "react-native-ui-kitten";
 export default StyleSheet.create({
-    container:{
-        paddingHorizontal: 50,
-        justifyContent: 'space-around',
-        flex: 1
-    },
-    title:{
-        fontSize: 42,
-        textAlign: 'center'
-    },
-    inputLabel:{
-        paddingBottom: 15
-    },
-    inputContainer:{
-        borderBottomColor: RkConfig.colors.darkGray,
-        marginTop: 40
-    },
-    input:{
-        fontSize: 20,
-        color: RkConfig.colors.primary
-    }
-})
+  container: {
+    paddingHorizontal: 50,
+    justifyContent: "space-around",
+    flex: 1
+  },
+  title: {
+    fontSize: 42,
+    textAlign: "center"
+  },
+  inputLabel: {
+    paddingBottom: 15
+  },
+  inputContainer: {
+    marginTop: 40
+  },
+  input: {
+    fontSize: 20,
+    color: RkConfig.colors.primary
+  }
+});
