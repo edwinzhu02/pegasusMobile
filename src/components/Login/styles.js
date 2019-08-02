@@ -18,6 +18,6 @@ export default StyleSheet.create({
   },
   input: {
     fontSize: 20,
-    color: RkConfig.colors.primary
+    color: RkConfig.colors.black
   }
 });
