@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { RkConfig } from "react-native-ui-kitten";
+import {StyleSheet} from 'react-native'
+import {RkConfig} from 'react-native-ui-kitten';
 export default StyleSheet.create({
     container:{
         paddingHorizontal: 50,
@@ -18,5 +18,6 @@ export default StyleSheet.create({
     },
     input:{
         fontSize: 20,
+        color: RkConfig.colors.primary
     }
 })

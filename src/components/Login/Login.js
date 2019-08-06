@@ -79,33 +79,26 @@ export default class Login extends Component {
           </View>
           <View style={{ minHeight: 185 }}>
             {Platform.OS === "ios" ? (
-              <View>
-                <RkTextInput
-                  //   onChangeText={text => this.setState({ username: text })}
-                  onChangeText={text =>
-                    this.setState({ username: text }, () => {
-                      console.log(text);
-                    })
-                  }
-                  rkType="underline topLabel"
-                  label="EMAIL ADDRESS"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  labelStyle={styles.inputLabel}
-                  containerStyle={styles.inputContainer}
-                  style={styles.input}
-                />
-                <RkTextInput
-                  rkType="underline topLabel"
-                  onChangeText={text => this.setState({ password: text })}
-                  label="PASSWORD"
-                  labelStyle={styles.inputLabel}
-                  containerStyle={styles.inputContainer}
-                  style={styles.input}
-                  secureTextEntry={true}
-                />
-              </View>
+                <View style={{minHeight: 185}}>
+                    <RkTextInput
+                        onChangeText={text=>this.setState({username: text})}
+                        rkType='underline topLabel'
+                        label='EMAIL ADDRESS'
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        labelStyle={styles.inputLabel}
+                        containerStyle={styles.inputContainer}
+                        style={styles.input}/>
+                    <RkTextInput
+                        rkType='underline topLabel'
+                        onChangeText={text=>this.setState({password: text})}
+                        label='PASSWORD'
+                        labelStyle={styles.inputLabel}
+                        containerStyle={styles.inputContainer}
+                        style={styles.input}
+                        secureTextEntry={true}/>
+                </View>
             ) : (
               <View>
                 <TextInput
