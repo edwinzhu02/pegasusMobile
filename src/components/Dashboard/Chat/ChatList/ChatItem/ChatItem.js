@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
         borderRadius: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
-        borderBottomColor: RkConfig.colors.lightGray,
         borderBottomWidth: 1
     },
     timeContainer:{

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import styles from './styles'
 import {RkButton, RkTextInput, RkConfig, RkText} from 'react-native-ui-kitten';
-import {Modal, ActivityIndicator, Text, Colors,} from 'react-native-paper';
+import {Modal, ActivityIndicator, Text, Colors, TextInput,} from 'react-native-paper';
 export default class Login extends Component{
     state={
         username: "",

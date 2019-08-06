@@ -14,11 +14,9 @@ export default StyleSheet.create({
         paddingBottom: 15
     },
     inputContainer:{
-        borderBottomColor: RkConfig.colors.darkGray,
         marginTop: 40
     },
     input:{
         fontSize: 20,
-        color: RkConfig.colors.primary
     }
 })
