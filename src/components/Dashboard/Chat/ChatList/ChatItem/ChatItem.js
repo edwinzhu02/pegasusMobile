@@ -35,7 +35,6 @@ export default class ChatItemClassic extends Component {
 }
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
     container:{
         marginTop: 0,
         marginBottom: 0,
@@ -53,23 +52,4 @@ const styles = StyleSheet.create({
         fontSize: 13,
         marginTop: 5
     }
-=======
-  container: {
-    marginTop: 0,
-    marginBottom: 0,
-    marginLeft: 0,
-    marginRight: 0,
-    borderRadius: 0,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    borderBottomWidth: 1
-  },
-  timeContainer: {
-    alignSelf: "flex-start"
-  },
-  subtitle: {
-    fontSize: 13,
-    marginTop: 5
-  }
->>>>>>> 849a1c151418e3dce274a64d21e4ae7eba2e9c97
 });
