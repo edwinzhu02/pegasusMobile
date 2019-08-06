@@ -2,12 +2,7 @@ import React, { Component } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
 import { View, KeyboardAvoidingView, Alert, Platform } from "react-native";
 import styles from "./styles";
-import {
-  RkButton,
-  RkTextInput,
-  RkText,
-  RkConfig
-} from "react-native-ui-kitten";
+import { RkButton, RkTextInput, RkText } from "react-native-ui-kitten";
 import {
   Modal,
   ActivityIndicator,
@@ -115,20 +110,20 @@ export default class Login extends Component {
               <View>
                 <TextInput
                   label="EMAIL ADDRESS"
-                  value={this.state.text}
+                  value={this.state.username}
                   onChangeText={text =>
                     this.setState({ username: text }, () => {
-                      console.log(text);
+                      console.log(this.state);
                     })
                   }
                 />
                 <TextInput
                   label="PASSWORD"
-                  value={this.state.text}
+                  value={this.state.password}
                   secureTextEntry={true}
                   onChangeText={text =>
                     this.setState({ password: text }, () => {
-                      console.log(text);
+                      console.log(this.state);
                     })
                   }
                 />
