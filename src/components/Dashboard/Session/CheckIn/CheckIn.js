@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
 import '../../../../util/global_config'
+import {ActivityIndicator, Colors} from "react-native-paper";
 export default class CheckIn extends Component {
   static navigationOptions = {
     title: "Check In"
@@ -30,11 +31,13 @@ export default class CheckIn extends Component {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
       fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
         .then(response => {
-          console.log(response, this.state.userId);
           return response.json();
         })
         .then(result =>
-          this.setState({ history: result.Data }, () => console.log(this.state))
+          this.setState(
+              {
+                history: result.Data,
+              }, () => console.log(this.state))
         )
         .catch(error => console.log(error));
     });
@@ -100,8 +103,13 @@ export default class CheckIn extends Component {
       }
     })
       .then(response => response.json())
-      .then(result => Alert.alert("", result.Data))
-      .catch(err => console.log(err))
+      .then(result => {
+        if (result.IsSuccess == false) {
+          throw new Error(result.ErrorMessage);
+        }
+        Alert.alert("Success", result.Data.toString())
+      })
+      .catch(err => Alert.alert("Fail", err.toString()))
   };
 
   renderSeparator = () => {
@@ -158,11 +166,12 @@ export default class CheckIn extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           ) : (
-            <Text
-              style={{ alignSelf: "center", fontWeight: "bold", fontSize: 25 }}
-            >
-              No data
-            </Text>
+              <ActivityIndicator
+                  style={{ alignSelf: "center" }}
+                  size={50}
+                  animating={true}
+                  color={Colors.blue100}
+              />
           )}
         </View>
       </View>

@@ -10,6 +10,7 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
 import '../../../../util/global_config'
+import {ActivityIndicator, Colors} from "react-native-paper";
 
 export default class CheckOut extends Component {
   static navigationOptions = {
@@ -87,8 +88,9 @@ export default class CheckOut extends Component {
       LocaltionX: this.state.location.where.lat,
       LocaltionY: this.state.location.where.lng
     });
+    console.log(body)
 
-    fetch(`${global.constants.basic_url}CheckOut`, {
+    fetch(`${global.constants.basic_url}LoginLog/CheckOut`, {
       method: "POST",
       body: body,
       headers: {
@@ -99,8 +101,13 @@ export default class CheckOut extends Component {
         console.log(response);
         return response.json();
       })
-      .then(result => Alert.alert("", result.Data, [{ text: "OK" }]))
-      .catch(error => console.log(error));
+        .then(result => {
+          if (result.IsSuccess == false) {
+            throw new Error(result.ErrorMessage);
+          }
+          Alert.alert("Success", result.Data.toString())
+        })
+        .catch(err => Alert.alert("Fail", err.toString()))
   };
 
   renderSeparator = () => {
@@ -135,7 +142,14 @@ export default class CheckOut extends Component {
         <View style={styles.history}>
           {this.state.history.length > 0 ? (
             <FlatList
-              data={this.state.history}
+              data={this.state.history.map(el=>{
+                if (el.LogType == 1) {
+                  el.LogType = "Check In";
+                } else {
+                  el.LogType = "Check Out";
+                }
+                return el;
+              })}
               renderItem={({ item }) => (
                 <ListItem
                   title={`${item.LogType}`}
@@ -147,11 +161,12 @@ export default class CheckOut extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           ) : (
-            <Text
-              style={{ alignSelf: "center", fontWeight: "bold", fontSize: 25 }}
-            >
-              No data
-            </Text>
+              <ActivityIndicator
+                  style={{ alignSelf: "center" }}
+                  size={50}
+                  animating={true}
+                  color={Colors.blue100}
+              />
           )}
         </View>
       </View>
