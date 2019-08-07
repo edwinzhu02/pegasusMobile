@@ -9,15 +9,11 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
-
-//http://gradspace.org:5000/api/loginlog/CheckIn => userId,locationX,locationY
-
+import '../../../../util/global_config'
 export default class CheckIn extends Component {
   static navigationOptions = {
     title: "Check In"
   };
-
-  CHECK_IN_API = "http://gradspace.org:5000/api/loginlog/CheckIn";
 
   state = {
     userId: "",
@@ -33,7 +29,7 @@ export default class CheckIn extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      fetch(`http://gradspace.org:5000/api/loginlog/${this.state.userId}`)
+      fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
         .then(response => {
           console.log(response, this.state.userId);
           return response.json();
@@ -97,7 +93,7 @@ export default class CheckIn extends Component {
 
     console.log(body);
 
-    fetch(this.CHECK_IN_API, {
+    fetch(`${global.constants.basic_url}loginlog/CheckIn`, {
       method: "POST",
       body: body,
       headers: {
@@ -105,8 +101,8 @@ export default class CheckIn extends Component {
       }
     })
       .then(response => response.json())
-      .then(result => Alert.alert("", result.Data, [{ text: "OK" }]))
-      .catch(err => console.log(err));
+      .then(result => Alert.alert("", result.Data))
+      .catch(err => console.log(err))
   };
 
   renderSeparator = () => {
