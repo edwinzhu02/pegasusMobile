@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
+import '../../../../util/global_config'
 
 export default class CheckOut extends Component {
   static navigationOptions = {
     title: "Check Out"
   };
 
-  CHECK_OUT_API = "http://gradspace.org:5000/api/loginlog/CheckOut";
 
   state = {
     userId: "",
@@ -30,7 +30,7 @@ export default class CheckOut extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      fetch(`http://gradspace.org:5000/api/loginlog/${this.state.userId}`)
+      fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
         .then(response => {
           return response.json();
         })
@@ -88,7 +88,7 @@ export default class CheckOut extends Component {
       LocaltionY: this.state.location.where.lng
     });
 
-    fetch(this.CHECK_OUT_API, {
+    fetch(`${global.constants.basic_url}CheckOut`, {
       method: "POST",
       body: body,
       headers: {

@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { View, KeyboardAvoidingView, Alert, Platform } from "react-native";
 import styles from "./styles";
 import { RkButton, RkTextInput, RkText } from "react-native-ui-kitten";
+import '../../util/global_config'
 import {
   Modal,
   ActivityIndicator,
@@ -24,7 +25,7 @@ export default class Login extends Component {
 
   LoginHandler = () => {
     this.setState({ visible: true });
-    fetch("http://gradspace.org:5000/api/login", {
+    fetch(global.constants.basic_url + "login", {
       method: "POST",
       body: JSON.stringify({
         userName: this.state.username,
