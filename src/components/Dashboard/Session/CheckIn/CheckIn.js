@@ -22,7 +22,6 @@ export default class CheckIn extends Component {
   state = {
     userId: "",
     dateTime: "",
-    recentRecordTime: "13:13",
     location: {
       ready: false,
       where: { lat: null, lng: null },
@@ -124,10 +123,6 @@ export default class CheckIn extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.topShadow}>
-          <Text style={styles.dateText}>{this.state.dateTime}</Text>
-          <Text style={styles.recentRecord}>
-            Record for today check in: {this.state.recentRecordTime}
-          </Text>
           <View style={styles.CircleContainer}>
             <TouchableOpacity onPress={() => this.CheckInHandler()}>
               <View style={styles.CircleButton}>
@@ -135,11 +130,11 @@ export default class CheckIn extends Component {
               </View>
             </TouchableOpacity>
           </View>
-          <Text style={{ padding: 5, color: "white" }}>
-            签到 09:03 迟到 3 分钟
+          <Text style={{ fontSize: 20, padding: 5, color: "white" }}>
+            Mon - Fri : 15:00 - 20:00
           </Text>
-          <Text style={{ padding: 5, color: "white" }}>
-            工作时间 09:00-18:00
+          <Text style={{ fontSize: 20, padding: 5, color: "white" }}>
+            Sat - Sun : 8:00 - 20:00
           </Text>
         </View>
         <View style={styles.history}>
@@ -208,7 +203,7 @@ const styles = StyleSheet.create({
   },
   CircleContainer: {
     justifyContent: "center",
-    paddingVertical: 15,
+    paddingVertical: 30,
     alignItems: "center"
   },
   ButtonText: {
