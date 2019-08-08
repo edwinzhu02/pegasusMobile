@@ -9,14 +9,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
-import '../../../../util/global_config'
-import {ActivityIndicator, Colors} from "react-native-paper";
+import "../../../../util/global_config";
+import { ActivityIndicator, Colors } from "react-native-paper";
 
 export default class CheckOut extends Component {
   static navigationOptions = {
     title: "Check Out"
   };
-
 
   state = {
     userId: "",
@@ -88,7 +87,7 @@ export default class CheckOut extends Component {
       LocaltionX: this.state.location.where.lat,
       LocaltionY: this.state.location.where.lng
     });
-    console.log(body)
+    console.log(body);
 
     fetch(`${global.constants.basic_url}LoginLog/CheckOut`, {
       method: "POST",
@@ -101,13 +100,13 @@ export default class CheckOut extends Component {
         console.log(response);
         return response.json();
       })
-        .then(result => {
-          if (result.IsSuccess == false) {
-            throw new Error(result.ErrorMessage);
-          }
-          Alert.alert("Success", result.Data.toString())
-        })
-        .catch(err => Alert.alert("Fail", err.toString()))
+      .then(result => {
+        if (result.IsSuccess == false) {
+          throw new Error(result.ErrorMessage);
+        }
+        Alert.alert("Success", result.Data.toString());
+      })
+      .catch(err => Alert.alert("Fail", err.toString()));
   };
 
   renderSeparator = () => {
@@ -142,7 +141,7 @@ export default class CheckOut extends Component {
         <View style={styles.history}>
           {this.state.history.length > 0 ? (
             <FlatList
-              data={this.state.history.map(el=>{
+              data={this.state.history.map(el => {
                 if (el.LogType == 1) {
                   el.LogType = "Check In";
                 } else {
@@ -161,12 +160,12 @@ export default class CheckOut extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           ) : (
-              <ActivityIndicator
-                  style={{ alignSelf: "center" }}
-                  size={50}
-                  animating={true}
-                  color={Colors.blue100}
-              />
+            <ActivityIndicator
+              style={{ alignSelf: "center" }}
+              size={50}
+              animating={true}
+              color={Colors.blue100}
+            />
           )}
         </View>
       </View>
