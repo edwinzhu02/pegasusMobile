@@ -57,10 +57,11 @@ export default class Login extends Component {
           "lastname",
           result.Data.userdetails.lastname
         );
+        await AsyncStorage.setItem("userPosition", result.Data.userdetails.position)
         await AsyncStorage.setItem(
-          "OrgId",
-          JSON.stringify(result.Data.userdetails.OrgId)
-        );
+            "SessionComponents", JSON.stringify(result.Data.mobileComponents)
+            );
+
         await AsyncStorage.setItem(
           "userid",
           JSON.stringify(result.Data.userid)

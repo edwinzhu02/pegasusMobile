@@ -1,9 +1,12 @@
 import React, {Component} from 'react'
-import {View,StyleSheet,Text,ScrollView} from 'react-native'
+import {View,StyleSheet,Text,ScrollView,Alert} from 'react-native'
 import FeedbackViewItem from './FeedbackViewItem/FeedbackViewItem'
 import Star from 'react-native-star-view'
 import {ActivityIndicator, Colors} from "react-native-paper";
-
+import '../../../../util/global_config'
+import AsyncStorage from "@react-native-community/async-storage";
+import '../../../../util/FeedbackStatistics'
+import {statistics} from "../../../../util/FeedbackStatistics";
 export default class FeedbackView extends Component{
     static navigationOptions = {
         title: 'Feedback View'
@@ -13,29 +16,59 @@ export default class FeedbackView extends Component{
         super(props)
         this.itemToRender = 5
         this.state = {
-            lessons: [
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Mike Lee",rating:4, lessonStartDate: "2019-06-10",comment: "This is a good teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"},
-                {name: "Richard Wang",rating:5, lessonStartDate: "2019-06-11",comment: "This is a bad teacher, but xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx. I hope he will change these mistakes"}
-            ],
+            userId: '',
+            userPosition: "",
+            lessons: [],
+            statistics: {
+                average: 0,
+                star: {one:0,two:0,three:0,four:0,five:0}
+            },
             itemToRender: this.itemToRender,
             isShowLoadingIcon: true
         }
+    }
+
+
+    componentDidMount = async () => {
+        this.setState({
+            userId: await AsyncStorage.getItem("userid"),
+            userPosition: await AsyncStorage.getItem("userPosition")
+        },()=>{
+            if (this.state.userPosition == "teacher"){
+                fetch(global.constants.basic_url + 'rating/TeacherGetRating/' + this.state.userId)
+                    .then(res=>res.json())
+                    .then(result=>{
+                        if (result.IsSuccess == false) {
+                            throw new Error(result.ErrorMessage);
+                        }
+                        const statistic = statistics(result.Data)
+                        let data = result.Data.map(s=>{
+                            return {name: s.FirstName+" "+s.LastName, rating: s.RateStar,lessonStartDate:s.BeginTime,comment: s.Comment}
+                        })
+                        this.setState({lessons:data, statistics: statistic})
+                    }).catch(err=>{
+                    Alert.alert(Alert.alert("Data loading Fail", err.toString()))
+                })
+            }else if (this.state.userPosition == "learner"){
+                console.log("sbc")
+                fetch(global.constants.basic_url + 'rating/LearnerGetRating/' + this.state.userId)
+                    .then(res=>res.json())
+                    .then(result=>{
+                        if (result.IsSuccess == false) {
+                            throw new Error(result.ErrorMessage);
+                        }
+                        const statistic = statistics(result.Data)
+                        let data = result.Data.map(s=>{
+                            return {name: s.FirstName+" "+s.LastName, rating: s.RateStar,lessonStartDate:s.BeginTime,comment: s.Comment}
+                        })
+                        this.setState({lessons:data, statistics: statistic})
+                    }).catch(err=>{
+                    Alert.alert(Alert.alert("Data loading Fail", err.toString()))
+                })
+            }
+
+        })
+
     }
 
     render(){
@@ -58,7 +91,7 @@ export default class FeedbackView extends Component{
             <View style={styles.container}>
                 <View style={styles.topContainer}>
                     <View style={styles.ratingText}>
-                        <Text style={{fontSize: 45}}>4.5 of 5</Text>
+                        <Text style={{fontSize: 45}}>{this.state.statistics.average} of 5</Text>
                     </View>
                     <View>
                         <View style={styles.ratingStar}>
@@ -66,7 +99,7 @@ export default class FeedbackView extends Component{
                                 <Star style={styles.star} score={1}/>
                             </View>
                             <View>
-                                <Text>(5)</Text>
+                                <Text>({this.state.statistics.star.one})</Text>
                             </View>
                         </View>
                         <View style={styles.ratingStar}>
@@ -74,7 +107,7 @@ export default class FeedbackView extends Component{
                                 <Star style={styles.star} score={2}/>
                             </View>
                             <View>
-                                <Text>(1)</Text>
+                                <Text>({this.state.statistics.star.two})</Text>
                             </View>
                         </View>
                         <View style={styles.ratingStar}>
@@ -82,7 +115,7 @@ export default class FeedbackView extends Component{
                                 <Star style={styles.star} score={3}/>
                             </View>
                             <View>
-                                <Text>(3)</Text>
+                                <Text>({this.state.statistics.star.three})</Text>
                             </View>
                         </View>
                         <View style={styles.ratingStar}>
@@ -90,7 +123,7 @@ export default class FeedbackView extends Component{
                                 <Star style={styles.star} score={4}/>
                             </View>
                             <View>
-                                <Text>(10)</Text>
+                                <Text>({this.state.statistics.star.four})</Text>
                             </View>
                         </View>
                         <View style={styles.ratingStar}>
@@ -98,7 +131,7 @@ export default class FeedbackView extends Component{
                                 <Star style={styles.star} score={5}/>
                             </View>
                             <View>
-                                <Text>(20)</Text>
+                                <Text>({this.state.statistics.star.five})</Text>
                             </View>
                         </View>
                     </View>

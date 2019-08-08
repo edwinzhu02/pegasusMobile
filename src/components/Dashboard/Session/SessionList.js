@@ -1,22 +1,26 @@
 import React, {Component} from 'react'
 import {View,StyleSheet,Text,TouchableOpacity,Dimensions} from 'react-native'
 import { FlatGrid, SectionGrid } from 'react-native-super-grid';
+import AsyncStorage from "@react-native-community/async-storage";
 
 class SessionList extends Component{
     static navigationOptions = {
         title: 'Session'
     };
-    render(){
-        const items = [
-            { name: 'Check In', code: '#1abc9c',component: 'CheckIn' },
-            { name: 'Check Out', code: '#2ecc71', component: 'CheckOut' },
-            { name: 'Schedule', code: '#3498db', component: 'Schedule' },
-            { name: 'Feedback', code: '#9b59b6',component:'Feedback' },
-            { name: 'View Feedback', code: '#27ae60', component: 'FeedbackView' },
-            // { name: 'Release future', code: '#16a085' },
-            // { name: 'Release future', code: '#27ae60' }, { name: 'Release future', code: '#2980b9' },
+    constructor(props){
+        super(props)
+        this.state = {
+            components: []
+        }
+    }
 
-        ];
+    componentWillMount = async () => {
+        const components = await AsyncStorage.getItem('SessionComponents')
+        this.setState({components: JSON.parse(components)})
+    }
+
+    render(){
+        const items = this.state.components
         const width = Dimensions.get('window').width/3
         return (
             <FlatGrid
