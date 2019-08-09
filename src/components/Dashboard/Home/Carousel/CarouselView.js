@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { View, Dimensions } from "react-native";
+import { Card, Paragraph } from "react-native-paper";
 import Carousel from "react-native-snap-carousel";
 
 class CarouselView extends Component {
@@ -26,12 +26,15 @@ class CarouselView extends Component {
       }
     ]
   };
+
+  width = Dimensions.get("window").width;
+
   renderItem = ({ item, index }) => {
     return (
-      <Card>
+      <Card style={{ backgroundColor: "#eee" }}>
         <Card.Cover
           source={{ uri: item.url }}
-          style={{ width: 400, height: 240 }}
+          style={{ width: this.width, height: 240 }}
         />
         <Card.Content>
           <Paragraph>{item.description}</Paragraph>
@@ -46,9 +49,8 @@ class CarouselView extends Component {
         <Carousel
           data={this.state.data}
           renderItem={this.renderItem}
-          sliderWidth={400}
-          itemWidth={400}
-          autoplay={true}
+          sliderWidth={this.width}
+          itemWidth={this.width}
         />
       </View>
     );

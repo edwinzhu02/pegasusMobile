@@ -20,6 +20,7 @@ import Feedback from "./src/components/Dashboard/Session/Feedback/Feedback";
 import FeedbackRating from "./src/components/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
 import FeedbackView from "./src/components/Dashboard/Session/FeedbackView/FeedbackView";
 import Chat from "./src/components/Dashboard/Chat/Chat";
+import EventDetail from "./src/components/Dashboard/Home/Events/EventDetail";
 
 const SessionStack = createStackNavigator({
   SessionList: SessionList,
@@ -52,7 +53,8 @@ const ChatStack = createStackNavigator({
 });
 
 const HomeStack = createStackNavigator({
-  Home: Home
+  Home: Home,
+  EventDetail: EventDetail
 });
 
 const AppStack = createBottomTabNavigator({
