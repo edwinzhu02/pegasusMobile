@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Image, Text, TouchableOpacity } from "react-native";
-import { Divider } from "react-native-paper";
+import { Divider } from "react-native-elements";
 
 class EventsListView extends Component {
   data = [
