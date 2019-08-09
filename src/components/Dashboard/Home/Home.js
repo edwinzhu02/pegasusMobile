@@ -32,7 +32,7 @@ class Home extends Component {
       <ScrollView>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <CarouselView />
+            <CarouselView navigation={this.props.navigation} />
           </View>
           <View style={{ flex: 1 }}>
             <EventsListView navigation={this.props.navigation} />
