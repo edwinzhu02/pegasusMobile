@@ -19,6 +19,7 @@ export default class CheckIn extends Component {
   state = {
     userId: "",
     dateTime: "",
+    isLoaded: false,
     location: {
       ready: false,
       where: { lat: null, lng: null },
@@ -37,6 +38,7 @@ export default class CheckIn extends Component {
           this.setState(
               {
                 history: result.Data,
+                isLoaded: true,
               }, () => console.log(this.state))
         )
         .catch(error => console.log(error));
@@ -169,7 +171,7 @@ export default class CheckIn extends Component {
               <ActivityIndicator
                   style={{ alignSelf: "center" }}
                   size={50}
-                  animating={true}
+                  animating={!this.state.isLoaded}
                   color={Colors.blue100}
               />
           )}
