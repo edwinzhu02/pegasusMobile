@@ -59,12 +59,6 @@ class EventsListView extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
-      <List.Section title="news">
-        {this.data.map(el=>
-        <List.Item key={el.id} title={el.title} description={el.content} />)}
-      </List.Section>
-=======
       <View style={{ marginTop: 10 }}>
         {this.data.map(el => (
           <TouchableOpacity
@@ -99,7 +93,6 @@ class EventsListView extends Component {
           </TouchableOpacity>
         ))}
       </View>
->>>>>>> 60d9329e11887f597b3889126a338f17938b82f9
     );
   }
 }
