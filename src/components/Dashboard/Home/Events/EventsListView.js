@@ -15,8 +15,8 @@ class EventsListView extends Component {
   render() {
     return (
       <List.Section title="news">
-        this.data.map(el=>
-        <List.Item key={el.id} title={el.title} description={el.content} />)
+        {this.data.map(el=>
+        <List.Item key={el.id} title={el.title} description={el.content} />)}
       </List.Section>
     );
   }
