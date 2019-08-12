@@ -28,6 +28,7 @@ export default class CheckIn extends Component {
     history: []
   };
 
+
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
       this.GetDataHandler()
@@ -44,7 +45,7 @@ export default class CheckIn extends Component {
                 {
                   history: result.Data,
                   isLoaded: true,
-                }, () => console.log(this.state))
+                })
         )
         .catch(error => console.log(error));
   }
@@ -70,11 +71,11 @@ export default class CheckIn extends Component {
 
   getGeoLocation = () => {
     //get location by gps
-    let geoOptions = {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 60 * 60 * 24
-    };
+    // let geoOptions = {
+    //   enableHighAccuracy: true,
+    //   timeout: 20000,
+    //   maximumAge: 60 * 60 * 24
+    // };
     this.setState({ location: { ready: false } });
     // navigator.geolocation.getCurrentPosition(
     //     this.geoSuccess,
@@ -173,7 +174,6 @@ export default class CheckIn extends Component {
                 return el;
               })}
               renderItem={({ item }) => {
-                console.log(item);
                 return (
                   <ListItem
                     title={`${item.LogType}`}

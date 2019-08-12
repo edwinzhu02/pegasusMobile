@@ -17,6 +17,7 @@ export default class CheckOut extends Component {
     title: "Check Out"
   };
 
+  _watchId;
   state = {
     userId: "",
     dateTime: "",
@@ -41,7 +42,7 @@ export default class CheckOut extends Component {
           return response.json();
         })
         .then(result =>
-            this.setState({ history: result.Data,isLoaded: true }, () => console.log(this.state))
+            this.setState({ history: result.Data,isLoaded: true })
         )
         .catch(error => console.log(error));
   }
@@ -58,20 +59,31 @@ export default class CheckOut extends Component {
       //Setting the value of the date time
       dateTime: date + "/" + month + "/" + year + " " + hours + ":" + min
     });
+    this.getGeoLocation()
 
-    //get location by gps
-    let geoOptions = {
-      enableHighAccuracy: true,
-      timeout: 20000,
-      maximumAge: 60 * 60 * 24
-    };
-    this.setState({ location: { ready: false } });
-    navigator.geolocation.getCurrentPosition(
-      this.geoSuccess,
-      this.goFailure,
-      geoOptions
-    );
   };
+  componentWillUnmount =() =>{
+    navigator.geolocation.clearWatch(this._watchId)
+  }
+
+  getGeoLocation = () => {
+    //get location by gps
+    // let geoOptions = {
+    //   enableHighAccuracy: true,
+    //   timeout: 20000,
+    //   maximumAge: 60 * 60 * 24
+    // };
+    this.setState({ location: { ready: false } });
+    this._watchId = navigator.geolocation.watchPosition(
+        this.geoSuccess,
+        this.goFailure,
+    )
+    // navigator.geolocation.getCurrentPosition(
+    //     this.geoSuccess,
+    //     this.goFailure,
+    //     geoOptions
+    // );
+  }
 
   geoSuccess = position => {
     this.setState({
@@ -92,7 +104,6 @@ export default class CheckOut extends Component {
       LocaltionX: this.state.location.where.lat,
       LocaltionY: this.state.location.where.lng
     });
-    console.log(body);
 
     fetch(`${global.constants.basic_url}LoginLog/CheckOut`, {
       method: "POST",
@@ -102,7 +113,6 @@ export default class CheckOut extends Component {
       }
     })
       .then(response => {
-        console.log(response);
         return response.json();
       })
       .then(result => {
