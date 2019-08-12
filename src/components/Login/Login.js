@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { View, KeyboardAvoidingView, Alert, Platform } from "react-native";
+import { View, Alert, Platform, TextInput } from "react-native";
 import styles from "./styles";
 import { RkButton, RkTextInput, RkText } from "react-native-ui-kitten";
-import '../../util/global_config'
+import "../../util/global_config";
 import {
   Modal,
   ActivityIndicator,
-  Text,
   Colors,
-  TextInput
+  Text,
+  Button
 } from "react-native-paper";
 
 export default class Login extends Component {
@@ -57,10 +57,14 @@ export default class Login extends Component {
           "lastname",
           result.Data.userdetails.lastname
         );
-        await AsyncStorage.setItem("userPosition", result.Data.userdetails.position)
         await AsyncStorage.setItem(
-            "SessionComponents", JSON.stringify(result.Data.mobileComponents)
-            );
+          "userPosition",
+          result.Data.userdetails.position
+        );
+        await AsyncStorage.setItem(
+          "SessionComponents",
+          JSON.stringify(result.Data.mobileComponents)
+        );
 
         await AsyncStorage.setItem(
           "userid",
@@ -80,10 +84,10 @@ export default class Login extends Component {
       <View style={{ flex: 1 }}>
         <Modal visible={this.state.visible}>
           <ActivityIndicator
-            style={{ alignSelf: "center" }}
-            size={50}
+            size={100}
             animating={true}
             color={Colors.blue100}
+            style={{ alignSelf: "center" }}
           />
           <Text style={{ alignSelf: "center" }}>Loading...</Text>
         </Modal>
@@ -117,36 +121,55 @@ export default class Login extends Component {
               </View>
             ) : (
               <View>
-                <TextInput
-                  label="EMAIL ADDRESS"
-                  value={this.state.username}
-                  onChangeText={text =>
-                    this.setState({ username: text }, () => {
-                      console.log(this.state);
-                    })
-                  }
-                />
-                <TextInput
-                  label="PASSWORD"
-                  value={this.state.password}
-                  secureTextEntry={true}
-                  onChangeText={text =>
-                    this.setState({ password: text }, () => {
-                      console.log(this.state);
-                    })
-                  }
-                />
+                <View>
+                  <Text>EMAIL ADDRESS:</Text>
+                  <TextInput
+                    style={{
+                      marginVertical: 10,
+                      borderRadius: 4,
+                      borderWidth: 1,
+                      borderColor: "#265cce"
+                    }}
+                    label="EMAIL ADDRESS"
+                    value={this.state.username}
+                    onChangeText={text =>
+                      this.setState({ username: text }, () => {
+                        console.log(this.state);
+                      })
+                    }
+                  />
+                </View>
+                <View>
+                  <Text>PASSWORD:</Text>
+                  <TextInput
+                    style={{
+                      marginVertical: 10,
+                      borderRadius: 4,
+                      borderWidth: 1,
+                      borderColor: "#265cce"
+                    }}
+                    label="PASSWORD"
+                    value={this.state.password}
+                    secureTextEntry={true}
+                    onChangeText={text =>
+                      this.setState({ password: text }, () => {
+                        console.log(this.state);
+                      })
+                    }
+                  />
+                </View>
               </View>
             )}
           </View>
           <View>
-            <RkButton
+            <Button
               onPress={() => this.LoginHandler()}
-              innerStyle={[{ fontSize: 20 }]}
-              rkType="circle outline medium"
+              mode="contained"
+              color="#265cce"
+              disabled={this.state.visible}
             >
               SIGN IN
-            </RkButton>
+            </Button>
           </View>
         </View>
       </View>
