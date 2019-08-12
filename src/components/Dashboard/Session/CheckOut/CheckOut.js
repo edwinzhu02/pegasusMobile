@@ -31,20 +31,22 @@ export default class CheckOut extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      this.GetDataHandler()
+      this.GetDataHandler();
     });
   };
 
   GetDataHandler = () => {
     fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(result =>
-            this.setState({ history: result.Data,isLoaded: true }, () => console.log(this.state))
+      .then(response => {
+        return response.json();
+      })
+      .then(result =>
+        this.setState({ history: result.Data, isLoaded: true }, () =>
+          console.log(this.state)
         )
-        .catch(error => console.log(error));
-  }
+      )
+      .catch(error => console.log(error));
+  };
 
   componentDidMount = () => {
     //get Date time now
@@ -112,11 +114,11 @@ export default class CheckOut extends Component {
         Alert.alert("Success", result.Data.toString());
       })
       .catch(err => Alert.alert("Fail", err.toString()))
-        .finally(()=>{
-          this.setState({isLoaded:false,history:[]},()=>{
-            this.GetDataHandler()
-          })
+      .finally(() => {
+        this.setState({ isLoaded: false, history: [] }, () => {
+          this.GetDataHandler();
         });
+      });
   };
 
   renderSeparator = () => {
@@ -152,9 +154,9 @@ export default class CheckOut extends Component {
           {this.state.history.length > 0 ? (
             <FlatList
               data={this.state.history.map(el => {
-                if (el.LogType == 1) {
+                if (el.LogType === 1) {
                   el.LogType = "Check In";
-                } else {
+                } else if (el.LogType === 0) {
                   el.LogType = "Check Out";
                 }
                 return el;
