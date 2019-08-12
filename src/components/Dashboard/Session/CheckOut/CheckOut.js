@@ -38,20 +38,12 @@ export default class CheckOut extends Component {
 
   GetDataHandler = () => {
     fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
-<<<<<<< HEAD
-        .then(response => {
-          return response.json();
-        })
-        .then(result =>
-            this.setState({ history: result.Data,isLoaded: true })
-=======
       .then(response => {
         return response.json();
       })
       .then(result =>
         this.setState({ history: result.Data, isLoaded: true }, () =>
           console.log(this.state)
->>>>>>> 82c7b652e7f9e604e64c8cefd53e69ec87ac6434
         )
       )
       .catch(error => console.log(error));
