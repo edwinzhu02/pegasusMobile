@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { ListItem } from "react-native-elements";
-import '../../../../util/global_config'
-import {ActivityIndicator, Colors} from "react-native-paper";
+import "../../../../util/global_config";
+import { ActivityIndicator, Colors } from "react-native-paper";
 export default class CheckIn extends Component {
   static navigationOptions = {
     title: "Check In"
@@ -31,7 +31,7 @@ export default class CheckIn extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      this.GetDataHandler()
+      this.GetDataHandler();
     });
   };
 
@@ -47,8 +47,9 @@ export default class CheckIn extends Component {
                   isLoaded: true,
                 })
         )
-        .catch(error => console.log(error));
-  }
+      )
+      .catch(error => console.log(error));
+  };
 
   componentDidMount = () => {
     //get Date time now
@@ -62,12 +63,12 @@ export default class CheckIn extends Component {
       //Setting the value of the date time
       dateTime: date + "/" + month + "/" + year + " " + hours + ":" + min
     });
-    this.getGeoLocation()
+    this.getGeoLocation();
   };
 
-  componentWillUnmount =() =>{
-    navigator.geolocation.clearWatch(this._watchId)
-  }
+  componentWillUnmount = () => {
+    navigator.geolocation.clearWatch(this._watchId);
+  };
 
   getGeoLocation = () => {
     //get location by gps
@@ -83,10 +84,10 @@ export default class CheckIn extends Component {
     //     geoOptions
     // );
     this._watchId = navigator.geolocation.watchPosition(
-        this.geoSuccess,
-        this.goFailure,
-    )
-  }
+      this.geoSuccess,
+      this.goFailure
+    );
+  };
 
   geoSuccess = position => {
     this.setState({
@@ -123,14 +124,14 @@ export default class CheckIn extends Component {
         if (result.IsSuccess == false) {
           throw new Error(result.ErrorMessage);
         }
-        Alert.alert("Success", result.Data.toString())
+        Alert.alert("Success", result.Data.toString());
       })
       .catch(err => Alert.alert("Fail", err.toString()))
-        .finally(()=>{
-          this.setState({isLoaded: false,history:[]},()=>{
-            this.GetDataHandler()
-          })
-        })
+      .finally(() => {
+        this.setState({ isLoaded: false, history: [] }, () => {
+          this.GetDataHandler();
+        });
+      });
   };
 
   renderSeparator = () => {
@@ -166,9 +167,10 @@ export default class CheckIn extends Component {
           {this.state.history.length > 0 ? (
             <FlatList
               data={this.state.history.map(el => {
-                if (el.LogType == 1) {
+                console.log(el.LogType);
+                if (el.LogType === 1) {
                   el.LogType = "Check In";
-                } else {
+                } else if (el.LogType === 0) {
                   el.LogType = "Check Out";
                 }
                 return el;
@@ -186,12 +188,12 @@ export default class CheckIn extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           ) : (
-              <ActivityIndicator
-                  style={{ alignSelf: "center" }}
-                  size={50}
-                  animating={!this.state.isLoaded}
-                  color={Colors.blue100}
-              />
+            <ActivityIndicator
+              style={{ alignSelf: "center" }}
+              size={50}
+              animating={!this.state.isLoaded}
+              color={Colors.blue100}
+            />
           )}
         </View>
       </View>
