@@ -46,9 +46,8 @@ export default class CheckIn extends Component {
                   history: result.Data,
                   isLoaded: true,
                 })
-        )
-      )
-      .catch(error => console.log(error));
+        ).catch(error => console.log(error));
+  )
   };
 
   componentDidMount = () => {
