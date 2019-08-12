@@ -31,16 +31,20 @@ export default class CheckOut extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
+      this.GetDataHandler()
+    });
+  };
+
+  GetDataHandler = () => {
+    fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
         .then(response => {
           return response.json();
         })
         .then(result =>
-          this.setState({ history: result.Data,isLoaded: true }, () => console.log(this.state))
+            this.setState({ history: result.Data,isLoaded: true }, () => console.log(this.state))
         )
         .catch(error => console.log(error));
-    });
-  };
+  }
 
   componentDidMount = () => {
     //get Date time now
@@ -107,7 +111,12 @@ export default class CheckOut extends Component {
         }
         Alert.alert("Success", result.Data.toString());
       })
-      .catch(err => Alert.alert("Fail", err.toString()));
+      .catch(err => Alert.alert("Fail", err.toString()))
+        .finally(()=>{
+          this.setState({isLoaded:false,history:[]},()=>{
+            this.GetDataHandler()
+          })
+        });
   };
 
   renderSeparator = () => {

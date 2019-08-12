@@ -15,7 +15,7 @@ export default class CheckIn extends Component {
   static navigationOptions = {
     title: "Check In"
   };
-
+  _watchId;
   state = {
     userId: "",
     dateTime: "",
@@ -30,20 +30,24 @@ export default class CheckIn extends Component {
 
   componentWillMount = async () => {
     this.setState({ userId: await AsyncStorage.getItem("userid") }, () => {
-      fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
+      this.GetDataHandler()
+    });
+  };
+
+  GetDataHandler = () => {
+    fetch(`${global.constants.basic_url}loginlog/${this.state.userId}`)
         .then(response => {
           return response.json();
         })
         .then(result =>
-          this.setState(
-              {
-                history: result.Data,
-                isLoaded: true,
-              }, () => console.log(this.state))
+            this.setState(
+                {
+                  history: result.Data,
+                  isLoaded: true,
+                }, () => console.log(this.state))
         )
         .catch(error => console.log(error));
-    });
-  };
+  }
 
   componentDidMount = () => {
     //get Date time now
@@ -57,7 +61,14 @@ export default class CheckIn extends Component {
       //Setting the value of the date time
       dateTime: date + "/" + month + "/" + year + " " + hours + ":" + min
     });
+    this.getGeoLocation()
+  };
 
+  componentWillUnmount =() =>{
+    navigator.geolocation.clearWatch(this._watchId)
+  }
+
+  getGeoLocation = () => {
     //get location by gps
     let geoOptions = {
       enableHighAccuracy: true,
@@ -65,12 +76,16 @@ export default class CheckIn extends Component {
       maximumAge: 60 * 60 * 24
     };
     this.setState({ location: { ready: false } });
-    navigator.geolocation.getCurrentPosition(
-      this.geoSuccess,
-      this.goFailure,
-      geoOptions
-    );
-  };
+    // navigator.geolocation.getCurrentPosition(
+    //     this.geoSuccess,
+    //     this.goFailure,
+    //     geoOptions
+    // );
+    this._watchId = navigator.geolocation.watchPosition(
+        this.geoSuccess,
+        this.goFailure,
+    )
+  }
 
   geoSuccess = position => {
     this.setState({
@@ -95,8 +110,6 @@ export default class CheckIn extends Component {
       LocaltionY: this.state.location.where.lng
     });
 
-    console.log(body);
-
     fetch(`${global.constants.basic_url}loginlog/CheckIn`, {
       method: "POST",
       body: body,
@@ -112,6 +125,11 @@ export default class CheckIn extends Component {
         Alert.alert("Success", result.Data.toString())
       })
       .catch(err => Alert.alert("Fail", err.toString()))
+        .finally(()=>{
+          this.setState({isLoaded: false,history:[]},()=>{
+            this.GetDataHandler()
+          })
+        })
   };
 
   renderSeparator = () => {
