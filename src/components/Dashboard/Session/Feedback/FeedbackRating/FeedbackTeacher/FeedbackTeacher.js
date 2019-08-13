@@ -24,6 +24,7 @@ export default class FeedbackTeacher extends Component {
               reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
               showRating
               defaultRating={this.props.rating}
+              isDisabled={this.props.disabled}
               onFinishRating={this.props.ratingUpdate}
             />
           </View>
@@ -46,6 +47,7 @@ export default class FeedbackTeacher extends Component {
               placeholderTextColor="grey"
               value={this.props.commentToLearner}
               numberOfLines={10}
+              editable={!this.props.disabled}
               multiline={true}
             />
           </View>
@@ -67,6 +69,7 @@ export default class FeedbackTeacher extends Component {
               placeholder="please enter your comment"
               placeholderTextColor="grey"
               value={this.props.commentToSchool}
+              editable={!this.props.disabled}
               numberOfLines={10}
               multiline={true}
             />
@@ -80,6 +83,7 @@ export default class FeedbackTeacher extends Component {
             color="green"
             width="90%"
             onPress={this.props.Confirm}
+            disabled={this.props.disabled}
           >
             Confirm
           </Button>
@@ -90,6 +94,7 @@ export default class FeedbackTeacher extends Component {
             width="90%"
             color="red"
             onPress={this.props.resetAll}
+            disabled={this.props.disabled}
           >
             Reset
           </Button>
