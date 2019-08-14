@@ -3,6 +3,7 @@ import FeedbackTeacher from './FeedbackTeacher/FeedbackTeacher'
 import FeedbackLearner from './FeedbackLearner/FeedbackLearner'
 import {HeaderBackButton} from 'react-navigation'
 import '../../../../../util/global_config'
+import { NavigationActions } from 'react-navigation'
 import {Alert} from 'react-native'
 export default class FeedbackRating extends Component{
     static navigationOptions =({navigation})=> ({
@@ -86,7 +87,35 @@ export default class FeedbackRating extends Component{
                 });
 
         }else{
+            if (this.state.commentToTeacher.length <= 20){
+                Alert.alert("Complete the form","You must comment at least 20 words")
+                return;
+            }
+            fetch(global.constants.basic_url + "rating/LearnerFeedback",{
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    UserId: navigation.getParam('userId'),
+                    LessonId: navigation.getParam('LessonId'),
+                    RateStar: this.state.rating,
+                    commentToTeacher: this.state.commentToTeacher
+                })
 
+            })
+                .then(res=>res.json())
+                .then(result=>{
+                    if (result.IsSuccess == false) {
+                        throw new Error(result.ErrorMessage);
+                    }
+                    Alert.alert("Success",  result.Data,[{text:'OK',onPress: ()=>{
+                            this.props.navigation.navigate("Feedback")
+                        }}])
+                })
+                .catch(err=>{
+                    Alert.alert("Error", err.toString());
+            })
         }
     }
 
@@ -113,8 +142,24 @@ export default class FeedbackRating extends Component{
                                 rating: Number(result.Data.ToLearner.RateStar)
                             })
                         })
+                        .catch(err=>{
+                            Alert.alert("Error", err.toString());
+                        })
                 }else{
-
+                    fetch(global.constants.basic_url + "rating/LearnerGetOneRatingHistoryById/"+ lessonId+"/"+userId)
+                        .then(res=>res.json())
+                        .then(result=>{
+                            if (result.IsSuccess == false) {
+                                throw new Error(result.ErrorMessage);
+                            }
+                            this.setState({
+                                commentToTeacher: result.Data.Comment,
+                                rating: Number(result.Data.RateStar)
+                            })
+                        })
+                        .catch(err=>{
+                            Alert.alert("Error", err.toString());
+                        })
                 }
             }
 
@@ -147,7 +192,7 @@ export default class FeedbackRating extends Component{
                     commentToTeacher={this.state.commentToTeacher}
                     Confirm={()=>this.ConfirmHandler()}
                     resetAll={()=>this.ResetHandler()}
-
+                    disabled={Number(navigation.getParam('isRate'))==1}
                 />
             )
         }

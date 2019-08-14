@@ -25,6 +25,7 @@ export default class FeedbackLearner extends Component {
               showRating
               defaultRating={this.props.rating}
               onFinishRating={this.props.ratingUpdate}
+              isDisabled={this.props.disabled}
             />
           </View>
           <View style={{ paddingVertical: 10 }} />
@@ -47,6 +48,7 @@ export default class FeedbackLearner extends Component {
               value={this.props.commentToTeacher}
               numberOfLines={10}
               multiline={true}
+              editable={!this.props.disabled}
             />
           </View>
           <View style={{ paddingVertical: 10 }} />
@@ -59,6 +61,7 @@ export default class FeedbackLearner extends Component {
             color="green"
             width="90%"
             onPress={this.props.Confirm}
+            disabled={this.props.disabled}
           >
             Confirm
           </Button>
@@ -69,6 +72,7 @@ export default class FeedbackLearner extends Component {
             width="90%"
             color="red"
             onPress={this.props.resetAll}
+            disabled={this.props.disabled}
           >
             Reset
           </Button>

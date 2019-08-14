@@ -24,7 +24,6 @@ export default class Feedback extends Component {
   };
 
   componentDidMount = async ()=>{
-      console.log(this.props.navigation)
     this.setState({
       userId: await AsyncStorage.getItem("userid"),
       userPosition: await AsyncStorage.getItem("userPosition")
@@ -44,10 +43,19 @@ export default class Feedback extends Component {
               }
               this.setState({lessons: result.Data, isLoaded:true})
             }).catch(err=> {
-                Alert.alert(Alert.alert("Data loading Fail", err.toString()))
+                Alert.alert("Data loading Fail", err.toString())
       })
     }else if (this.state.userPosition == "learner"){
-
+        fetch(global.constants.basic_url + 'rating/LearnerFeedbackRatingList/' + this.state.userId)
+            .then(res=>res.json())
+            .then(result=>{
+                if (result.IsSuccess == false) {
+                    throw new Error(result.ErrorMessage);
+                }
+                this.setState({lessons: result.Data, isLoaded:true})
+            }).catch(err=>{
+                Alert.alert("Data loading Fail", err.toString())
+        })
     }
   }
 
