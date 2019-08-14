@@ -3,15 +3,18 @@ import FeedbackTeacher from './FeedbackTeacher/FeedbackTeacher'
 import FeedbackLearner from './FeedbackLearner/FeedbackLearner'
 import {HeaderBackButton} from 'react-navigation'
 import '../../../../../util/global_config'
-import { NavigationActions } from 'react-navigation'
 import {Alert} from 'react-native'
-export default class FeedbackRating extends Component{
+import {connect} from 'react-redux';
+import {ConfirmChange} from '../../../../../redux/actions/CommentConfirmAction'
+class FeedbackRating extends Component{
     static navigationOptions =({navigation})=> ({
         title: 'Feedback Rating',
         headerLeft:(<HeaderBackButton onPress={()=>{
             if (Number(navigation.getParam("isRate")) != 1) {
                 Alert.alert("Warning","Are you sure to go back?",[{
-                    text:'OK',onPress:()=>{navigation.navigate('Feedback')}
+                    text:'OK',onPress:()=>{
+                        navigation.navigate('Feedback')
+                    }
                 },{
                     text:'Cancel'
                 }
@@ -22,8 +25,9 @@ export default class FeedbackRating extends Component{
         }}/>)
     });
 
-    constructor(props){
-        super(props)
+
+    changeConfirm = () =>{
+        this.props.changeConfirm()
     }
 
 
@@ -79,6 +83,7 @@ export default class FeedbackRating extends Component{
                     }
                     Alert.alert("Success",  result.Data,[{text:'OK',onPress: ()=>{
                         this.props.navigation.navigate("Feedback")
+                        this.changeConfirm()
                         }}])
 
                 })
@@ -111,6 +116,7 @@ export default class FeedbackRating extends Component{
                     }
                     Alert.alert("Success",  result.Data,[{text:'OK',onPress: ()=>{
                             this.props.navigation.navigate("Feedback")
+                            this.changeConfirm()
                         }}])
                 })
                 .catch(err=>{
@@ -198,3 +204,17 @@ export default class FeedbackRating extends Component{
         }
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        changeConfirm: ()=>{
+            dispatch(ConfirmChange())
+        }
+    }
+}
+
+const mapStateToProps = (state) =>({
+    IsConfirm: state.CommentConfirm
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(FeedbackRating)

@@ -10,20 +10,28 @@ import { ListItem } from "react-native-elements";
 import '../../../../util/global_config'
 import AsyncStorage from "@react-native-community/async-storage";
 import {ActivityIndicator, Colors} from "react-native-paper";
-export default class Feedback extends Component {
+import {connect} from 'react-redux';
+import { Icon } from 'react-native-elements'
+class Feedback extends Component {
   static navigationOptions = {
     title: "Feedback"
   };
 
-  state = {
-    isLoaded: false,
-    lessons: [],
-    userId: "",
-    userPosition: "",
-    navigatedAway: false
-  };
+  constructor(props){
+      super(props)
+      this.state = {
+          isLoaded: false,
+          lessons: [],
+          userId: "",
+          userPosition: ""
+      };
+  }
 
-  componentDidMount = async ()=>{
+  componentWillReceiveProps = ()=> {
+      this.getDataHandler()
+  }
+
+    componentDidMount = async ()=>{
     this.setState({
       userId: await AsyncStorage.getItem("userid"),
       userPosition: await AsyncStorage.getItem("userPosition")
@@ -31,8 +39,6 @@ export default class Feedback extends Component {
       this.getDataHandler()
     })
   }
-
-
     getDataHandler = () => {
     if (this.state.userPosition == "teacher"){
       fetch(global.constants.basic_url + 'rating/TeacherFeedbackRatingList/' + this.state.userId)
@@ -70,7 +76,6 @@ export default class Feedback extends Component {
     );
   };
 
-
   render() {
     return (
         this.state.isLoaded?(<View style={styles.container}>
@@ -80,6 +85,7 @@ export default class Feedback extends Component {
                   renderItem={({ item }) => (
                       <ListItem
                           rightIcon={{ name: "chevron-right" }}
+                          leftIcon={item.isRate==0?(<Icon name='close' color='red'/>):(<Icon name='check' color='green'/>)}
                           title={`${item.BeginTime}`}
                           subtitle={`${item.isRate==0?"unrate":"rated"}`}
                           onPress={() => this.props.navigation.navigate("FeedbackRating",{
@@ -113,3 +119,10 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
+
+const mapStateToProps = (state) =>({
+    IsConfirm: state.CommentConfirm
+})
+
+
+export default connect(mapStateToProps)(Feedback)
