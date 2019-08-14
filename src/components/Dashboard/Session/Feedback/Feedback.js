@@ -47,7 +47,13 @@ class Feedback extends Component {
               if (result.IsSuccess == false) {
                 throw new Error(result.ErrorMessage);
               }
-              this.setState({lessons: result.Data, isLoaded:true})
+              this.setState({
+                  lessons: result.Data.sort((a,b)=>{
+                      if (a.isRate >= b.isRate) return 1
+                      return -1
+                  }),
+                  isLoaded:true
+              })
             }).catch(err=> {
                 Alert.alert("Data loading Fail", err.toString())
       })
@@ -58,7 +64,14 @@ class Feedback extends Component {
                 if (result.IsSuccess == false) {
                     throw new Error(result.ErrorMessage);
                 }
-                this.setState({lessons: result.Data, isLoaded:true})
+
+                this.setState({
+                    lessons: result.Data.sort((a,b)=>{
+                        if (a.isRate > b.isRate) return 1
+                        return -1
+                    }),
+                    isLoaded:true
+                })
             }).catch(err=>{
                 Alert.alert("Data loading Fail", err.toString())
         })
@@ -85,9 +98,9 @@ class Feedback extends Component {
                   renderItem={({ item }) => (
                       <ListItem
                           rightIcon={{ name: "chevron-right" }}
-                          leftIcon={item.isRate==0?(<Icon name='close' color='red'/>):(<Icon name='check' color='green'/>)}
-                          title={`${item.BeginTime}`}
-                          subtitle={`${item.isRate==0?"unrate":"rated"}`}
+                          leftIcon={item.isRate==0?(<Icon name='more-vert' color='red'/>):(<Icon name='check' color='green'/>)}
+                          title={`${item.CourseName}`}
+                          subtitle={`${item.BeginTime.replace('T', ' ')}`}
                           onPress={() => this.props.navigation.navigate("FeedbackRating",{
                             LessonId: item.LessonId,
                             role: this.state.userPosition,
