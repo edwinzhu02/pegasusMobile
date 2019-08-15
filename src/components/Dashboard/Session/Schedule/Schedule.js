@@ -33,23 +33,26 @@ export default class Schedule extends Component {
 
   componentDidMount = async () => {
     this.setState(
-        {
-          userId: await AsyncStorage.getItem("userid"),
-          userPosition: await AsyncStorage.getItem("userPosition")
-        },
-        () => {
-          fetch(
-              global.constants.basic_url +
-              "Lesson/GetMobileLessonsForTeacherbyDate/" +
-              this.state.userId +
-              "/" +
-              this.state.TodayDate
-          )
-              .then(res => res.json())
-              .then(result =>
-                  this.setState({ items: result.Data, isFetchFinished: true })
-              );
-        }
+      {
+        userId: await AsyncStorage.getItem("userid"),
+        userPosition: await AsyncStorage.getItem("userPosition")
+      },
+      () => {
+        fetch(
+          global.constants.basic_url +
+            "Lesson/GetMobileLessonsForTeacherbyDate/" +
+            this.state.userId +
+            "/" +
+            this.state.TodayDate
+        )
+          .then(res => res.json())
+          .then(result => {
+            this.setState({ items: result.Data, isFetchFinished: true });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     );
   };
 
@@ -59,17 +62,17 @@ export default class Schedule extends Component {
         time: info.time,
         student: info.student
       },
-      IsModalVisible: true,
+      IsModalVisible: true
     });
   };
 
   renderItem = item => {
     return (
-        <TouchableOpacity onPress={() => this.eventClick(item.info)}>
-          <View style={[styles.item, { height: item.height }]}>
-            <Text>{item.name}</Text>
-          </View>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => this.eventClick(item.info)}>
+        <View style={[styles.item, { height: item.height }]}>
+          <Text>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -84,63 +87,63 @@ export default class Schedule extends Component {
 
   renderEmptyData = () => {
     return (
-        <Text style={{ textAlign: "center", marginTop: 150, fontSize: 24 }}>
-          You don't have course today
-        </Text>
+      <Text style={{ textAlign: "center", marginTop: 150, fontSize: 24 }}>
+        You don't have course today
+      </Text>
     );
   };
   render() {
     console.log(this.state);
     return (
-        <View style={{ flex: 1 }}>
-          <Modal isVisible={this.state.IsModalVisible} transparent={true}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalMainView}>
-                <Text style={styles.modalTitle}>Information</Text>
-                <View
-                    style={{
-                      height: 1,
-                      backgroundColor: "#CED0CE",
-                      width: "90%",
-                      alignSelf: "center"
-                    }}
-                />
-                <ScrollView>
-                  <View style={{ paddingTop: 10 }}>
-                    <View style={styles.contentRowView}>
-                      <Text style={styles.contentTitle}>Time</Text>
-                      <Text style={styles.contentRow}>
-                        {this.state.info.time}
-                      </Text>
-                    </View>
-                    <View style={styles.contentRowView}>
-                      <Text style={styles.contentTitle}>Student</Text>
-                      <Text style={styles.contentRow}>
-                        {this.state.info.student }
-                      </Text>
-                    </View>
+      <View style={{ flex: 1 }}>
+        <Modal isVisible={this.state.IsModalVisible} transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalMainView}>
+              <Text style={styles.modalTitle}>Information</Text>
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: "#CED0CE",
+                  width: "90%",
+                  alignSelf: "center"
+                }}
+              />
+              <ScrollView>
+                <View style={{ paddingTop: 10 }}>
+                  <View style={styles.contentRowView}>
+                    <Text style={styles.contentTitle}>Time</Text>
+                    <Text style={styles.contentRow}>
+                      {this.state.info.time}
+                    </Text>
                   </View>
-                </ScrollView>
-                <View style={styles.modalButtonContainer}>
-                  <Button
-                      title="Close"
-                      onPress={() => this.setState({ IsModalVisible: false })}
-                  />
+                  <View style={styles.contentRowView}>
+                    <Text style={styles.contentTitle}>Student</Text>
+                    <Text style={styles.contentRow}>
+                      {this.state.info.student}
+                    </Text>
+                  </View>
                 </View>
+              </ScrollView>
+              <View style={styles.modalButtonContainer}>
+                <Button
+                  title="Close"
+                  onPress={() => this.setState({ IsModalVisible: false })}
+                />
               </View>
             </View>
-          </Modal>
-          <Agenda
-              items={this.state.items}
-              // loadItemsForMonth={this.loadItems.bind(this)}
-              selected={this.state.TodayDate}
-              renderItem={this.renderItem.bind(this)}
-              renderEmptyData={
-                this.state.isFetchFinished ? this.renderEmptyData : null
-              }
-              rowHasChanged={this.rowHasChanged.bind(this)}
-          />
-        </View>
+          </View>
+        </Modal>
+        <Agenda
+          items={this.state.items}
+          // loadItemsForMonth={this.loadItems.bind(this)}
+          selected={this.state.TodayDate}
+          renderItem={this.renderItem.bind(this)}
+          renderEmptyData={
+            this.state.isFetchFinished ? this.renderEmptyData : null
+          }
+          rowHasChanged={this.rowHasChanged.bind(this)}
+        />
+      </View>
     );
   }
 }
