@@ -29,6 +29,7 @@ export default class Schedule extends Component {
         student: null
       }
     };
+<<<<<<< HEAD
   }
 
   componentDidMount = async () => {
@@ -128,6 +129,152 @@ export default class Schedule extends Component {
                 <Button
                   title="Close"
                   onPress={() => this.setState({ IsModalVisible: false })}
+=======
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            items: {},
+            TodayDate: moment(new Date()).format('YYYY-MM-DD'),
+            IsModalVisible: false,
+            info:{
+                time: null,
+                student: null
+            }
+        };
+    }
+
+
+    loadItems = (day) => {
+        console.log("abc")
+        setTimeout(()=>{
+            this.setState(
+                {
+                    items: {
+                        "2019-06-30": [],
+                        "2019-06-25": [],
+                        "2019-06-27":
+                            [
+                                {
+                                    "name":"18:30 one to one course","height":50,
+                                    'info':{
+                                        "time": '18:30',
+                                        "student": 'mike'
+                                    }
+                                },
+                                {"name":"20:30 one to one course","height":50,'info':{
+                                        "time": '20:30',
+                                        "student": 'mike'
+                                    }}
+                                ],
+                        "2019-06-26":[{"name":"15:30 one to one course","height":50,'info':{
+                                "time": '15:30',
+                                "student": 'mike'
+                            }}],
+                        "2019-06-28":[{"name":"10:00 group Course","height":50,'info':{
+                                "time": '10:00',
+                                "student": 'mike'
+                            }}],
+                        "2019-06-29":[{"name":"11:00 one to one course","height":50,'info':{
+                                "time": '11:00',
+                                "student": 'mike'
+                            }}],
+                        "2019-07-29":[{"name":"11:00 one to one course","height":50,'info':{
+                                "time": '11:00',
+                                "student": 'mike'
+                            }}],
+                    }
+                }
+            )
+        },1000)
+    }
+
+
+    eventClick = (info) =>{
+        this.setState({
+            info:{
+                time: info.time,
+                student: info.student
+            },
+            IsModalVisible: true
+        })
+    }
+
+    renderItem = (item) => {
+        return (
+            <TouchableOpacity onPress={()=>this.eventClick(item.info)}>
+                <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+            </TouchableOpacity>
+        );
+    }
+
+    renderEmptyDate= ()=> {
+        return (
+            <View/>
+        );
+    }
+
+    rowHasChanged = (r1, r2) => {
+        return r1.name !== r2.name;
+    }
+
+    timeToString = (time)=> {
+        const date = new Date(time);
+        return date.toISOString().split('T')[0];
+    }
+
+
+    render(){
+        return (
+            <View style={{flex:1}}>
+
+
+                <Modal
+                    isVisible={this.state.IsModalVisible}
+                    transparent={true}
+                >
+
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalMainView}>
+                            <Text style={styles.modalTitle}>Information</Text>
+                            <View
+                                style={{
+                                    height:1,
+                                    backgroundColor: '#CED0CE',
+                                    width: '90%',
+                                    alignSelf: 'center'
+                                }}
+                            />
+                            <ScrollView>
+                                <View style={{paddingTop: 10}}>
+                                    <View style={styles.contentRowView}>
+                                        <Text style={styles.contentTitle}>Time</Text>
+                                        <Text style={styles.contentRow}>{this.state.info.time}</Text>
+                                    </View>
+                                    <View style={styles.contentRowView}>
+                                        <Text style={styles.contentTitle}>Student</Text>
+                                        <Text style={styles.contentRow}>{this.state.info.student}</Text>
+                                    </View>
+                                </View>
+                            </ScrollView>
+                            <View style={styles.modalButtonContainer}>
+                                <Button title="Close" onPress={()=>this.setState({IsModalVisible: false})}>
+                                </Button>
+                            </View>
+                        </View>
+
+                    </View>
+                </Modal>
+
+
+                <Agenda
+                    items={this.state.items}
+                    loadItemsForMonth={this.loadItems.bind(this)}
+                    selected={this.state.TodayDate}
+                    renderItem={this.renderItem.bind(this)}
+                    renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    rowHasChanged={this.rowHasChanged.bind(this)}
+>>>>>>> a
                 />
               </View>
             </View>
