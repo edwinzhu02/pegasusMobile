@@ -119,7 +119,7 @@ export default class Schedule extends Component {
                   <View style={styles.contentRowView}>
                     <Text style={styles.contentTitle}>Student</Text>
                     <Text style={styles.contentRow}>
-                      {this.state.info.student}
+                      {this.state.info.student }
                     </Text>
                   </View>
                 </View>
