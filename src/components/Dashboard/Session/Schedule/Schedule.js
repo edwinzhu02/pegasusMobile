@@ -46,9 +46,12 @@ export default class Schedule extends Component {
             this.state.TodayDate
         )
           .then(res => res.json())
-          .then(result =>
-            this.setState({ items: result.Data, isFetchFinished: true })
-          );
+          .then(result => {
+            this.setState({ items: result.Data, isFetchFinished: true });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     );
   };
@@ -60,8 +63,7 @@ export default class Schedule extends Component {
         time: info.time,
         student: info.student
       },
-      IsModalVisible: true,
-      isFetchFinished: false
+      IsModalVisible: true
     });
   };
 
@@ -119,7 +121,7 @@ export default class Schedule extends Component {
                   <View style={styles.contentRowView}>
                     <Text style={styles.contentTitle}>Student</Text>
                     <Text style={styles.contentRow}>
-                      {this.state.info.student }
+                      {this.state.info.student}
                     </Text>
                   </View>
                 </View>
