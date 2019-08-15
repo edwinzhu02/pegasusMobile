@@ -93,7 +93,6 @@ export default class Schedule extends Component {
       </Text>
     );
   };
-
   render() {
     console.log(this.state);
     return (
@@ -135,7 +134,6 @@ export default class Schedule extends Component {
             </View>
           </View>
         </Modal>
-
         <Agenda
           items={this.state.items}
           // loadItemsForMonth={this.loadItems.bind(this)}
@@ -150,7 +148,6 @@ export default class Schedule extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   item: {
     backgroundColor: "white",
