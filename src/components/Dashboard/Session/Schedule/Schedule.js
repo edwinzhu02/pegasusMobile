@@ -54,14 +54,12 @@ export default class Schedule extends Component {
   };
 
   eventClick = info => {
-    console.log(info);
     this.setState({
       info: {
         time: info.time,
         student: info.student
       },
       IsModalVisible: true,
-      isFetchFinished: false
     });
   };
 
