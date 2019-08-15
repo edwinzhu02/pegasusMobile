@@ -8,81 +8,11 @@ import {
   ScrollView
 } from "react-native";
 import moment from "moment";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { Agenda } from "react-native-calendars";
 import Modal from "react-native-modal";
+import "../../../../util/global_config";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const items = {
-  "2019-06-30": [],
-  "2019-06-25": [],
-  "2019-06-27": [
-    {
-      name: "18:30 one to one course",
-      height: 50,
-      info: {
-        time: "18:30",
-        student: "mike"
-      }
-    },
-    {
-      name: "20:30 one to one course",
-      height: 50,
-      info: {
-        time: "20:30",
-        student: "mike"
-      }
-    }
-  ],
-  "2019-06-26": [
-    {
-      name: "15:30 one to one course",
-      height: 50,
-      info: {
-        time: "15:30",
-        student: "mike"
-      }
-    }
-  ],
-  "2019-06-28": [
-    {
-      name: "10:00 group Course",
-      height: 50,
-      info: {
-        time: "10:00",
-        student: "mike"
-      }
-    }
-  ],
-  "2019-06-29": [
-    {
-      name: "11:00 one to one course",
-      height: 50,
-      info: {
-        time: "11:00",
-        student: "mike"
-      }
-    }
-  ],
-  "2019-07-29": [
-    {
-      name: "11:00 one to one course",
-      height: 50,
-      info: {
-        time: "11:00",
-        student: "mike"
-      }
-    }
-  ],
-  "2019-08-15": [
-    {
-      name: "11:00 one to one course",
-      height: 50,
-      info: {
-        time: "11:00",
-        student: "mike"
-      }
-    }
-  ]
-};
 export default class Schedule extends Component {
   static navigationOptions = {
     title: "Schedule"
@@ -101,13 +31,30 @@ export default class Schedule extends Component {
     };
   }
 
-  loadItems = day => {
-    setTimeout(() => {
-      this.setState({ items: items, isFetchFinished: true });
-    }, 4000);
+  componentDidMount = async () => {
+    this.setState(
+      {
+        userId: await AsyncStorage.getItem("userid"),
+        userPosition: await AsyncStorage.getItem("userPosition")
+      },
+      () => {
+        fetch(
+          global.constants.basic_url +
+            "Lesson/GetMobileLessonsForTeacherbyDate/" +
+            this.state.userId +
+            "/" +
+            this.state.TodayDate
+        )
+          .then(res => res.json())
+          .then(result =>
+            this.setState({ items: result.Data, isFetchFinished: true })
+          );
+      }
+    );
   };
 
   eventClick = info => {
+    console.log(info);
     this.setState({
       info: {
         time: info.time,
@@ -146,6 +93,7 @@ export default class Schedule extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <View style={{ flex: 1 }}>
         <Modal isVisible={this.state.IsModalVisible} transparent={true}>
@@ -188,7 +136,7 @@ export default class Schedule extends Component {
 
         <Agenda
           items={this.state.items}
-          loadItemsForMonth={this.loadItems.bind(this)}
+          // loadItemsForMonth={this.loadItems.bind(this)}
           selected={this.state.TodayDate}
           renderItem={this.renderItem.bind(this)}
           renderEmptyData={
