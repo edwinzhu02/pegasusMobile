@@ -40,6 +40,7 @@ class Feedback extends Component {
       },
       () => {
         this.getDataHandler();
+        
       }
     );
   };
