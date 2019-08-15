@@ -7,6 +7,7 @@ export default class Schedule extends Component{
     static navigationOptions = {
         title: 'Schedule'
     };
+<<<<<<< HEAD
 
     constructor(props) {
         super(props);
@@ -151,6 +152,107 @@ export default class Schedule extends Component{
                     renderItem={this.renderItem.bind(this)}
                     renderEmptyDate={this.renderEmptyDate.bind(this)}
                     rowHasChanged={this.rowHasChanged.bind(this)}
+=======
+  }
+
+  componentDidMount = async () => {
+    this.setState(
+      {
+        userId: await AsyncStorage.getItem("userid"),
+        userPosition: await AsyncStorage.getItem("userPosition")
+      },
+      () => {
+        fetch(
+          global.constants.basic_url +
+            "Lesson/GetMobileLessonsForTeacherbyDate/" +
+            this.state.userId +
+            "/" +
+            this.state.TodayDate
+        )
+          .then(res => res.json())
+          .then(result =>
+            this.setState({ items: result.Data, isFetchFinished: true })
+          );
+      }
+    );
+  };
+
+  eventClick = info => {
+    console.log(info);
+    this.setState({
+      info: {
+        time: info.time,
+        student: info.student
+      },
+      IsModalVisible: true,
+      isFetchFinished: false
+    });
+  };
+
+  renderItem = item => {
+    return (
+      <TouchableOpacity onPress={() => this.eventClick(item.info)}>
+        <View style={[styles.item, { height: item.height }]}>
+          <Text>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  rowHasChanged = (r1, r2) => {
+    return r1.name !== r2.name;
+  };
+
+  timeToString = time => {
+    const date = new Date(time);
+    return date.toISOString().split("T")[0];
+  };
+
+  renderEmptyData = () => {
+    return (
+      <Text style={{ textAlign: "center", marginTop: 150, fontSize: 24 }}>
+        You don't have course today
+      </Text>
+    );
+  };
+
+  render() {
+    console.log(this.state);
+    return (
+      <View style={{ flex: 1 }}>
+        <Modal isVisible={this.state.IsModalVisible} transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalMainView}>
+              <Text style={styles.modalTitle}>Information</Text>
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: "#CED0CE",
+                  width: "90%",
+                  alignSelf: "center"
+                }}
+              />
+              <ScrollView>
+                <View style={{ paddingTop: 10 }}>
+                  <View style={styles.contentRowView}>
+                    <Text style={styles.contentTitle}>Time</Text>
+                    <Text style={styles.contentRow}>
+                      {this.state.info.time}
+                    </Text>
+                  </View>
+                  <View style={styles.contentRowView}>
+                    <Text style={styles.contentTitle}>Student</Text>
+                    <Text style={styles.contentRow}>
+                      {this.state.info.student }
+                    </Text>
+                  </View>
+                </View>
+              </ScrollView>
+              <View style={styles.modalButtonContainer}>
+                <Button
+                  title="Close"
+                  onPress={() => this.setState({ IsModalVisible: false })}
+>>>>>>> 2f6f4d8ef16f1ed15da6151cff2547fdc1c59cfb
                 />
             </View>
         )
