@@ -78,8 +78,6 @@ export default class FeedbackView extends Component {
         });
         let newArr = this.state.lessons;
         newArr.push(...data);
-        console.log(newArr);
-        console.log(page);
         this.setState({
           lessons: newArr,
           page: this.state.page + 1,
@@ -105,8 +103,6 @@ export default class FeedbackView extends Component {
         );
       }
     });
-
-    console.log(this.state.statistics);
 
     return (
       <View style={styles.container}>
