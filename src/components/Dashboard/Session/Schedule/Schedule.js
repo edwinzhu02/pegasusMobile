@@ -39,29 +39,84 @@ export default class Schedule extends Component {
         userPosition: await AsyncStorage.getItem("userPosition")
       },
       () => {
-        fetch(
-          global.constants.basic_url +
-            "Lesson/GetMobileLessonsForTeacherbyDate/" +
-            this.state.userId +
-            "/" +
-            this.state.TodayDate
-        )
-          .then(res => res.json())
-          .then(result => {
-            this.setState({ items: result.Data, isFetchFinished: true });
-            this.setFalseData();
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        this.fetchData(this.state.userId, this.state.TodayDate);
       }
     );
   };
 
-  setFalseData() {
+  fetchData(userId, date) {
+    fetch(
+      global.constants.basic_url +
+        "Lesson/GetMobileLessonsForTeacherbyDate/" +
+        userId +
+        "/" +
+        date
+    )
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ items: result.Data, isFetchFinished: true }, () => {
+          this.setDataForEmptyDate();
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  setDataForEmptyDate() {
+    let emptyDateObj = {};
     let items = this.state.items;
-    let test = { "2019-08-17": [], "2019-08-18": [], "2019-08-19": [] };
-    this.setState({ items: Object.assign(items, test) });
+    const dateArr = Object.keys(items).sort();
+    const startYear = +dateArr[0].split("-")[0];
+    const endYear = +dateArr[dateArr.length - 1].split("-")[0];
+    const startMonth = +dateArr[0].split("-")[1];
+    const endMonth = +dateArr[dateArr.length - 1].split("-")[1];
+    for (let i = startMonth; i <= endMonth; i++) {
+      let daysInMonth = 0;
+      if (
+        i === 1 ||
+        i === 3 ||
+        i === 5 ||
+        i === 7 ||
+        i === 8 ||
+        i === 10 ||
+        i === 12
+      ) {
+        daysInMonth = 31;
+      } else if (i === 2) {
+        daysInMonth = 28;
+      } else {
+        daysInMonth = 30;
+      }
+      let days = [];
+      dateArr.map(el => {
+        if (i === +el.split("-")[1]) {
+          days.push(+el.split("-")[2]);
+        }
+      });
+      for (let j = 1; j <= daysInMonth; j++) {
+        if (!days.includes(j)) {
+          let tempStr = "";
+          if (endMonth >= startMonth) {
+            tempStr =
+              startYear +
+              "-" +
+              (i < 10 ? "0" + i : i) +
+              "-" +
+              (j < 10 ? "0" + j : j);
+          } else {
+            tempStr =
+              endYear +
+              "-" +
+              (i < 10 ? "0" + i : i) +
+              "-" +
+              (j < 10 ? "0" + j : j);
+          }
+          emptyDateObj[tempStr] = [];
+        }
+      }
+    }
+    this.setState({ items: Object.assign(items, emptyDateObj) });
   }
 
   eventClick = info => {
@@ -75,11 +130,15 @@ export default class Schedule extends Component {
   };
 
   renderItem = item => {
+    console.log(item);
     return (
       <View>
         <TouchableOpacity onPress={() => this.eventClick(item.info)}>
           <View style={[styles.item, { height: item.height }]}>
-            <Text>{item.name}</Text>
+            <Text style={{ fontSize: 18, marginBottom: 10 }}>
+              {item.info.time}
+            </Text>
+            <Text style={{ fontSize: 16 }}>{item.name.trim()}</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -104,7 +163,6 @@ export default class Schedule extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <View style={{ flex: 1 }}>
         <Modal isVisible={this.state.IsModalVisible} transparent={true}>
@@ -149,6 +207,8 @@ export default class Schedule extends Component {
         </Modal>
         <Agenda
           items={this.state.items}
+          minDate={"2019-07-10"}
+          maxDate={"2019-11-01"}
           selected={this.state.TodayDate}
           renderItem={this.renderItem.bind(this)}
           renderEmptyDate={() => {
@@ -158,6 +218,9 @@ export default class Schedule extends Component {
             this.state.isFetchFinished ? this.renderEmptyData : null
           }
           rowHasChanged={this.rowHasChanged.bind(this)}
+          onDayChange={day => {
+            console.log(day);
+          }}
           theme={{
             "stylesheet.agenda.main": {
               knobContainer: {
