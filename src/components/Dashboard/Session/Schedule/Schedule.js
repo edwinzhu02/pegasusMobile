@@ -12,6 +12,7 @@ import { Agenda } from "react-native-calendars";
 import Modal from "react-native-modal";
 import "../../../../util/global_config";
 import AsyncStorage from "@react-native-community/async-storage";
+import { Divider } from "react-native-elements";
 
 export default class Schedule extends Component {
   static navigationOptions = {
@@ -48,6 +49,7 @@ export default class Schedule extends Component {
           .then(res => res.json())
           .then(result => {
             this.setState({ items: result.Data, isFetchFinished: true });
+            this.setFalseData();
           })
           .catch(err => {
             console.log(err);
@@ -56,11 +58,17 @@ export default class Schedule extends Component {
     );
   };
 
+  setFalseData() {
+    let items = this.state.items;
+    let test = { "2019-08-17": [], "2019-08-18": [], "2019-08-19": [] };
+    this.setState({ items: Object.assign(items, test) });
+  }
+
   eventClick = info => {
     this.setState({
       info: {
         time: info.time,
-        student: info.student
+        student: info.learner || info.learners
       },
       IsModalVisible: true
     });
@@ -68,11 +76,13 @@ export default class Schedule extends Component {
 
   renderItem = item => {
     return (
-      <TouchableOpacity onPress={() => this.eventClick(item.info)}>
-        <View style={[styles.item, { height: item.height }]}>
-          <Text>{item.name}</Text>
-        </View>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={() => this.eventClick(item.info)}>
+          <View style={[styles.item, { height: item.height }]}>
+            <Text>{item.name}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -92,6 +102,7 @@ export default class Schedule extends Component {
       </Text>
     );
   };
+
   render() {
     console.log(this.state);
     return (
@@ -118,9 +129,12 @@ export default class Schedule extends Component {
                   </View>
                   <View style={styles.contentRowView}>
                     <Text style={styles.contentTitle}>Student</Text>
-                    <Text style={styles.contentRow}>
-                      {this.state.info.student}
-                    </Text>
+                    {this.state.info.student &&
+                      this.state.info.student.map(el => (
+                        <Text key={el.LearnerId} style={styles.contentRow}>
+                          {el.FirstName + " " + el.LastName}
+                        </Text>
+                      ))}
                   </View>
                 </View>
               </ScrollView>
@@ -135,13 +149,28 @@ export default class Schedule extends Component {
         </Modal>
         <Agenda
           items={this.state.items}
-          // loadItemsForMonth={this.loadItems.bind(this)}
           selected={this.state.TodayDate}
           renderItem={this.renderItem.bind(this)}
+          renderEmptyDate={() => {
+            return <Divider style={styles.emptyDate} />;
+          }}
           renderEmptyData={
             this.state.isFetchFinished ? this.renderEmptyData : null
           }
           rowHasChanged={this.rowHasChanged.bind(this)}
+          theme={{
+            "stylesheet.agenda.main": {
+              knobContainer: {
+                flex: 1,
+                position: "absolute",
+                left: 0,
+                right: 0,
+                height: 16,
+                bottom: 0,
+                alignItems: "center"
+              }
+            }
+          }}
         />
       </View>
     );
@@ -152,14 +181,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
     borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
+    padding: 15,
+    marginRight: 20,
+    marginTop: 38
   },
   emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30
+    height: 2,
+    backgroundColor: "#dfdfdf",
+    marginRight: 20,
+    marginTop: 50
   },
   modalContainer: {
     flex: 1,
