@@ -205,10 +205,11 @@ export default class Schedule extends Component {
             </View>
           </View>
         </Modal>
+        {/* 加上min和max date */}
         <Agenda
           items={this.state.items}
-          minDate={"2019-07-10"}
-          maxDate={"2019-11-01"}
+          minDate={new Date(new Date().setMonth(new Date().getMonth() - 1))}
+          maxDate={new Date(new Date().setMonth(new Date().getMonth() + 1))}
           selected={this.state.TodayDate}
           renderItem={this.renderItem.bind(this)}
           renderEmptyDate={() => {
