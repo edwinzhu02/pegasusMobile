@@ -21,6 +21,9 @@ import FeedbackRating from "./src/components/Dashboard/Session/Feedback/Feedback
 import FeedbackView from "./src/components/Dashboard/Session/FeedbackView/FeedbackView";
 import Chat from "./src/components/Dashboard/Chat/Chat";
 import EventDetail from "./src/components/Dashboard/Home/Events/EventDetail";
+import AvatarDetails from "./src/components/Dashboard/Profile/AvatarDetails/AvatarDetails";
+import PasswordDetails from "./src/components/Dashboard/Profile/PasswordDetails/PasswordDetails";
+import PersonalDetails from "./src/components/Dashboard/Profile/PersonalDetails/PersonalDetails";
 
 const SessionStack = createStackNavigator({
   SessionList: SessionList,
@@ -37,7 +40,25 @@ const SessionStack = createStackNavigator({
 });
 
 const ProfileStack = createStackNavigator({
-  Profile: Profile
+  Profile: Profile,
+  AvatarDetails: {
+    screen: AvatarDetails,
+    navigationOptions: ({ navigation }) => ({
+      title: "Avatar"
+    })
+  },
+  PasswordDetails: {
+    screen: PasswordDetails,
+    navigationOptions: ({ navigation }) => ({
+      title: "Password"
+    })
+  },
+  PersonalDetails: {
+    screen: PersonalDetails,
+    navigationOptions: ({ navigation }) => ({
+      title: "PersonalDetails"
+    })
+  }
 });
 
 const ChatStack = createStackNavigator({
