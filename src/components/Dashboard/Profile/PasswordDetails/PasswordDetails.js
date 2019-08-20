@@ -10,28 +10,29 @@ class PasswordDetails extends Component {
     helperVisibility: false
   };
 
-  setButtonDisable() {
+  setButtonDisable = () => {
     if (this.state.passwordOne && this.state.passwordTwo) {
       this.setState({ buttonValidFlag: true });
     } else {
       this.setState({ buttonValidFlag: false });
     }
-  }
+  };
 
-  checkEqual() {
+  checkEqual = () => {
     if (this.state.passwordOne === this.state.passwordTwo) {
       return true;
     }
     return false;
-  }
+  };
 
-  submit() {
+  submit = () => {
     if (this.checkEqual()) {
+      this.setState({ helperVisibility: false });
       console.log("success");
     } else {
       this.setState({ helperVisibility: true });
     }
-  }
+  };
 
   render() {
     const windowWidth = Dimensions.get("window").width;
@@ -43,7 +44,9 @@ class PasswordDetails extends Component {
           label="Password"
           mode="outlined"
           value={this.state.passwordOne}
-          onChangeText={text => this.setState({ passwordOne: text })}
+          onChangeText={text =>
+            this.setState({ passwordOne: text, helperVisibility: false })
+          }
           style={{ marginTop: 20, width: windowWidth - 40 }}
         />
         <TextInput
@@ -52,15 +55,19 @@ class PasswordDetails extends Component {
           mode="outlined"
           value={this.state.passwordTwo}
           onChangeText={text => {
-            this.setState({ passwordTwo: text });
-            this.setButtonDisable();
+            this.setState(
+              { passwordTwo: text, helperVisibility: false },
+              () => {
+                this.setButtonDisable();
+              }
+            );
           }}
           style={{ marginTop: 20, width: windowWidth - 40 }}
         />
         <HelperText
           type="error"
           visible={this.state.helperVisibility}
-          style={{ fontSize: 18, marginTop: 10 }}
+          style={{ fontSize: 16, marginTop: 10 }}
         >
           password is not equal
         </HelperText>
