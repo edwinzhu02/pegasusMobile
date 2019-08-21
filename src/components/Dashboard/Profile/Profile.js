@@ -4,7 +4,7 @@ import ReactNativeSettingsPage, {
   NavigateRow
 } from "react-native-settings-page";
 import { View, ScrollView } from "react-native";
-import { RkCard, RkButton } from "react-native-ui-kitten";
+import { Button, List, Divider } from "react-native-paper";
 import AsyncStorage from "@react-native-community/async-storage";
 
 class Profile extends Component {
@@ -20,49 +20,58 @@ class Profile extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
-          <ReactNativeSettingsPage>
-            <SectionRow text="Account">
-              <NavigateRow
-                text="Avatar"
-                iconName="user"
-                onPressCallback={() =>
-                  this.props.navigation.navigate("AvatarDetails")
-                }
-              />
-              <NavigateRow
-                text="Change Password"
-                iconName="user"
-                onPressCallback={() =>
-                  this.props.navigation.navigate("PasswordDetails")
-                }
-              />
-              <NavigateRow
-                text="Update Personal Details"
-                iconName="user"
-                onPressCallback={() =>
-                  this.props.navigation.navigate("PersonalDetails")
-                }
-              />
-            </SectionRow>
-            <SectionRow text="Usage">
-              <NavigateRow text="Navigate Row" iconName="user" />
-              <NavigateRow text="Navigate Row" iconName="user" />
-              <NavigateRow text="Navigate Row" iconName="user" />
-            </SectionRow>
-          </ReactNativeSettingsPage>
-        </ScrollView>
-        <RkCard>
-          <RkButton
-            style={[{ borderColor: "red" }]}
-            innerStyle={[{ fontSize: 20, color: "red" }]}
+          <List.Item
+            style={styles.listItem}
+            title="Change Avatar"
+            onPress={() => this.props.navigation.navigate("AvatarDetails")}
+            left={props => <List.Icon {...props} icon="camera-enhance" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+          />
+          <Divider />
+          <List.Item
+            style={styles.listItem}
+            title="Change Password"
+            onPress={() => this.props.navigation.navigate("PasswordPanel")}
+            left={props => <List.Icon {...props} icon="lock" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+          />
+          <Divider />
+          <List.Item
+            style={styles.listItem}
+            title="Update Personal Details"
+            onPress={() => this.props.navigation.navigate("PersonalDetails")}
+            left={props => <List.Icon {...props} icon="account-box" />}
+            right={props => <List.Icon {...props} icon="chevron-right" />}
+          />
+
+          <Button
+            mode="outlined"
+            color="red"
+            style={{
+              marginTop: 100,
+              marginBottom: 20,
+              marginHorizontal: 20,
+              paddingVertical: 5,
+              borderWidth: 2,
+              borderColor: "red"
+            }}
             onPress={() => this.signOutAsync()}
           >
             Log Out
-          </RkButton>
-        </RkCard>
+          </Button>
+        </ScrollView>
       </View>
     );
   }
 }
+
+const styles = {
+  listHeader: {
+    fontSize: 20
+  },
+  listItem: {
+    marginTop: 10
+  }
+};
 
 export default Profile;
