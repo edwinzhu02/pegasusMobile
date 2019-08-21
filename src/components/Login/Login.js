@@ -63,6 +63,7 @@ export default class Login extends Component {
           "SessionComponents",
           JSON.stringify(result.Data.mobileComponents)
         );
+        await AsyncStorage.setItem("username", this.state.username);
 
         await AsyncStorage.setItem(
           "userid",
@@ -120,7 +121,7 @@ export default class Login extends Component {
             ) : (
               <View>
                 <View>
-                  <Text>EMAIL ADDRESS:</Text>
+                  <Text>Username:</Text>
                   <TextInput
                     style={{
                       marginVertical: 10,
@@ -128,17 +129,13 @@ export default class Login extends Component {
                       borderWidth: 1,
                       borderColor: "#265cce"
                     }}
-                    label="EMAIL ADDRESS"
+                    label="username"
                     value={this.state.username}
-                    onChangeText={text =>
-                      this.setState({ username: text }, () => {
-                        console.log(this.state);
-                      })
-                    }
+                    onChangeText={text => this.setState({ username: text })}
                   />
                 </View>
                 <View>
-                  <Text>PASSWORD:</Text>
+                  <Text>Password:</Text>
                   <TextInput
                     style={{
                       marginVertical: 10,
@@ -149,11 +146,7 @@ export default class Login extends Component {
                     label="PASSWORD"
                     value={this.state.password}
                     secureTextEntry={true}
-                    onChangeText={text =>
-                      this.setState({ password: text }, () => {
-                        console.log(this.state);
-                      })
-                    }
+                    onChangeText={text => this.setState({ password: text })}
                   />
                 </View>
               </View>

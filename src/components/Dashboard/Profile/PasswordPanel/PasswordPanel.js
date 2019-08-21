@@ -1,27 +1,13 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 import PasswordDetails from "./PasswordDetails";
-import CurrentPasswordPage from "./CurrentPasswordPage";
 
 class PasswordPanel extends Component {
-  state = {
-    confirmationFlag: false
-  };
-
-  handleConfirmationChange = () => {
-    this.setState({ confirmationFlag: true });
-  };
-
+  //dsy401 qwe123 123456
   render() {
     return (
       <View>
-        {this.state.confirmationFlag ? (
-          <PasswordDetails />
-        ) : (
-          <CurrentPasswordPage
-            handleConfirmationChange={() => this.handleConfirmationChange()}
-          />
-        )}
+        <PasswordDetails {...this.props} />
       </View>
     );
   }
