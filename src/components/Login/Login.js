@@ -39,6 +39,7 @@ export default class Login extends Component {
         return res.json();
       })
       .then(async result => {
+        console.log(result);
         if (result.IsSuccess == false) {
           throw new Error(result.ErrorMessage);
         }

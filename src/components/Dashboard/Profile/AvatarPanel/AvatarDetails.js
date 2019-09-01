@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 import { View, Image, Dimensions } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, ActivityIndicator } from "react-native-paper";
 import ImagePicker from "react-native-image-crop-picker";
+import AsyncStorage from "@react-native-community/async-storage";
+import "../../../../util/global_config";
 
 class AvatarDetails extends Component {
   state = {
-    imageUrl:
-      "https://images.unsplash.com/photo-1565945985123-4c67ab31eb8d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+    imageUrl: "",
+    isWaiting: false
+  };
+
+  userId;
+
+  componentDidMount = async () => {
+    this.userId = await AsyncStorage.getItem("userid");
+    try {
+      let response = await fetch(
+        global.constants.basic_url + "Login/GetProfileImg/" + this.userId
+      );
+      let data = await response.json();
+      this.setState({ imageUrl: global.constants.photo_url + data.Data });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   openImage = async () => {
@@ -15,8 +32,25 @@ class AvatarDetails extends Component {
       height: 750,
       cropping: true
     });
-    this.setState({imageUrl:image.path})
+    let fd = new FormData();
+    fd.append("photo", { uri: image.path, name: "new.jpg", type: image.mime });
     console.log(image);
+    this.setState({ isWaiting: true });
+    try {
+      let response = await fetch(
+        global.constants.basic_url + "Login/ChangeImg/" + this.userId,
+        {
+          method: "POST",
+          body: fd
+        }
+      );
+      console.log(response);
+      let result = await response.json();
+      console.log(result);
+      this.setState({ imageUrl: image.path, isWaiting: false });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   render() {
@@ -32,19 +66,32 @@ class AvatarDetails extends Component {
             uri: this.state.imageUrl
           }}
         />
-        <Button
-          onPress={() => this.openImage()}
-          mode="contained"
-          color="#4F7FFE"
-          style={{
-            marginTop: 50,
-            alignSelf: "center",
-            paddingVertical: 10,
-            width: windowWidth - 20
-          }}
-        >
-          Change Avatar
-        </Button>
+        {this.state.isWaiting ? (
+          <ActivityIndicator
+            size="large"
+            animating={this.state.isWaiting}
+            style={{
+              marginTop: 50,
+              alignSelf: "center",
+              paddingVertical: 10,
+              width: windowWidth - 20
+            }}
+          ></ActivityIndicator>
+        ) : (
+          <Button
+            onPress={() => this.openImage()}
+            mode="contained"
+            color="#4F7FFE"
+            style={{
+              marginTop: 50,
+              alignSelf: "center",
+              paddingVertical: 10,
+              width: windowWidth - 20
+            }}
+          >
+            Change Avatar
+          </Button>
+        )}
       </View>
     );
   }
