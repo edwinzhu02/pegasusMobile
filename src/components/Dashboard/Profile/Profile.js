@@ -46,14 +46,14 @@ class Profile extends Component {
 
           <Button
             mode="outlined"
-            color="red"
+            color="#c62828"
             style={{
               marginTop: 100,
               marginBottom: 20,
               marginHorizontal: 20,
               paddingVertical: 5,
               borderWidth: 2,
-              borderColor: "red"
+              borderColor: "#c62828"
             }}
             onPress={() => this.signOutAsync()}
           >

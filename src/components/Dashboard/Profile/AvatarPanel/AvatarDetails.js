@@ -57,15 +57,29 @@ class AvatarDetails extends Component {
     let windowWidth = Dimensions.get("window").width;
     return (
       <View>
-        <Image
-          style={{
-            width: windowWidth,
-            height: windowWidth
-          }}
-          source={{
-            uri: this.state.imageUrl
-          }}
-        />
+        {this.state.imageUrl ? (
+          <Image
+            style={{
+              width: windowWidth,
+              height: windowWidth
+            }}
+            source={{
+              uri: this.state.imageUrl
+            }}
+          />
+        ) : (
+          <ActivityIndicator
+            size="large"
+            animating={this.state.isWaiting}
+            style={{
+              marginTop: 50,
+              alignSelf: "center",
+              paddingVertical: 10,
+              width: windowWidth - 20
+            }}
+          ></ActivityIndicator>
+        )}
+
         {this.state.isWaiting ? (
           <ActivityIndicator
             size="large"
