@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, Alert } from "react-native";
 import { TextInput, Title, Button } from "react-native-paper";
 import "../../../../util/global_config";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -30,11 +30,30 @@ class PersonalDetails extends Component {
     }
   };
 
-  handleClick = () => {
-    console.log(this.state, this.emailReg.test(this.state.email));
-    if (!this.emailReg.test(this.state.email)) {
+  handleClick = async () => {
+    if (!this.emailReg.test(this.state.Email)) {
+      Alert.alert("Error", "Invalid Email Address");
     } else {
-      console.log("success");
+      const body = JSON.stringify({
+        ContactNum: this.state.ContactNum,
+        Email: this.state.Email
+      });
+      try {
+        let response = await fetch(
+          global.constants.basic_url + "Login/ChangeProfile/" + this.userId,
+          {
+            method: "POST",
+            body: body,
+            headers: {
+              "content-type": "application/json"
+            }
+          }
+        );
+        let result = await response.json();
+        console.log(result);
+      } catch (e) {
+        console.log("error");
+      }
     }
   };
 
