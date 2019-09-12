@@ -3,7 +3,7 @@ import { View, Button, StyleSheet, Text, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import CarouselView from "./Carousel/CarouselView";
 import EventsListView from "./Events/EventsListView";
-
+console.disableYellowBox = true
 class Home extends Component {
   static navigationOptions = {
     headerTitle: "Home"

@@ -7,23 +7,23 @@ import {
 } from "react-navigation";
 import AuthLoading from "./src/components/AuthLoading/AuthLoading";
 import Icon from "react-native-vector-icons/Ionicons";
-import Login from "./src/components/Login/Login";
-import Home from "./src/components/Dashboard/Home/Home";
-import SessionList from "./src/components/Dashboard/Session/SessionList";
-import Profile from "./src/components/Dashboard/Profile/Profile";
-import ChatList from "./src/components/Dashboard/Chat/ChatList/ChatList";
-import ContactList from "./src/components/Dashboard/Chat/ContactList/ContactList";
-import CheckIn from "./src/components/Dashboard/Session/CheckIn/CheckIn";
-import CheckOut from "./src/components/Dashboard/Session/CheckOut/CheckOut";
-import Schedule from "./src/components/Dashboard/Session/Schedule/Schedule";
-import Feedback from "./src/components/Dashboard/Session/Feedback/Feedback";
-import FeedbackRating from "./src/components/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
-import FeedbackView from "./src/components/Dashboard/Session/FeedbackView/FeedbackView";
-import Chat from "./src/components/Dashboard/Chat/Chat";
-import EventDetail from "./src/components/Dashboard/Home/Events/EventDetail";
-import AvatarDetails from "./src/components/Dashboard/Profile/AvatarPanel/AvatarDetails";
-import PasswordPanel from "./src/components/Dashboard/Profile/PasswordPanel/PasswordPanel";
-import PersonalDetails from "./src/components/Dashboard/Profile/PersonalPanel/PersonalDetails";
+import Login from "./src/container/Login/Login";
+import Home from "./src/container/Dashboard/Home/Home";
+import SessionList from "./src/container/Dashboard/Session/SessionList";
+import Profile from "./src/container/Dashboard/Profile/Profile";
+import ChatList from "./src/container/Dashboard/Chat/ChatList/ChatList";
+import ContactList from "./src/container/Dashboard/Chat/ContactList/ContactList";
+import CheckIn from "./src/container/Dashboard/Session/CheckIn/CheckIn";
+import CheckOut from "./src/container/Dashboard/Session/CheckOut/CheckOut";
+import Schedule from "./src/container/Dashboard/Session/Schedule/Schedule";
+import Feedback from "./src/container/Dashboard/Session/Feedback/Feedback";
+import FeedbackRating from "./src/container/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
+import FeedbackView from "./src/container/Dashboard/Session/FeedbackView/FeedbackView";
+import Chat from "./src/container/Dashboard/Chat/Chat";
+import EventDetail from "./src/container/Dashboard/Home/Events/EventDetail";
+import AvatarDetails from "./src/container/Dashboard/Profile/AvatarPanel/AvatarDetails";
+import PasswordPanel from "./src/container/Dashboard/Profile/PasswordPanel/PasswordPanel";
+import PersonalDetails from "./src/container/Dashboard/Profile/PersonalPanel/PersonalDetails";
 
 const SessionStack = createStackNavigator({
   SessionList: SessionList,

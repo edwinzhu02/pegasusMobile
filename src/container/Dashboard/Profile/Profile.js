@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import ReactNativeSettingsPage, {
-  SectionRow,
-  NavigateRow
-} from "react-native-settings-page";
 import { View, ScrollView } from "react-native";
 import { Button, List, Divider } from "react-native-paper";
 import AsyncStorage from "@react-native-community/async-storage";
