@@ -1,18 +1,38 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import {
+    Text,
     View,
 } from 'react-native'
 export default class App extends React.Component {
     static navigationOptions = ({navigation}) =>( {
-        title: ""
+        title: "",
     });
 
     state = {
+        messages: [],
     }
 
-    constructor(props){
-        super(props)
+    componentWillMount() {
+        this.setState({
+            messages: [
+                {
+                    _id: 1,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                        avatar: 'https://placeimg.com/140/140/any',
+                    },
+                },
+            ],
+        })
+    }
+    onSend(messages = []) {
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, messages),
+        }))
     }
 
 
@@ -20,7 +40,21 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <View/>
+            <GiftedChat
+                // renderFooter={()=>{return (<Text>xxx is typing ...</Text>)}}
+                renderUsernameOnMessage={true}
+                showUserAvatar={true}
+                loadEarlier={true}
+                placeholder="Type a message..."
+                alwaysShowSend={true}
+                messages={this.state.messages}
+                onSend={messages => this.onSend(messages)}
+                user={{
+                    _id: 1,
+                    name: 'Oliver',
+                    avatar: 'https://placeimg.com/140/140/any',
+                }}
+            />
         );
     }
 

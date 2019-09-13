@@ -56,7 +56,7 @@ const ProfileStack = createStackNavigator({
   PersonalDetails: {
     screen: PersonalDetails,
     navigationOptions: ({ navigation }) => ({
-      title: "PersonalDetails"
+      title: "PersonalDetails",
     })
   }
 });
