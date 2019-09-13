@@ -73,6 +73,17 @@ const ChatStack = createStackNavigator({
   }
 });
 
+ChatStack.navigationOptions = ({navigation}) =>{
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
 const HomeStack = createStackNavigator({
   Home: Home,
   EventDetail: EventDetail
@@ -83,8 +94,8 @@ const AppStack = createBottomTabNavigator({
     screen: HomeStack,
     navigationOptions: {
       tabBarLabel: "Home",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-home" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-home" color={tintColor} size={24}/>
       )
     }
   },
@@ -92,8 +103,8 @@ const AppStack = createBottomTabNavigator({
     screen: SessionStack,
     navigationOptions: {
       tabBarLabel: "Session",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-calendar" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-calendar" color={tintColor} size={24}/>
       )
     }
   },
@@ -101,8 +112,8 @@ const AppStack = createBottomTabNavigator({
     screen: ChatStack,
     navigationOptions: {
       taBarLabel: "Chat",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-chatboxes" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-chatboxes" color={tintColor} size={24}/>
       )
     }
   },
@@ -110,8 +121,8 @@ const AppStack = createBottomTabNavigator({
     screen: ProfileStack,
     navigationOptions: {
       tabBarLabel: "Profile",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="md-person" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="md-person" color={tintColor} size={24}/>
       )
     }
   }

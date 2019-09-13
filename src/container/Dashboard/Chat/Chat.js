@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 export default class App extends React.Component {
     static navigationOptions = ({navigation}) =>( {
-        title: "",
+        title: ""
     });
 
     state = {
