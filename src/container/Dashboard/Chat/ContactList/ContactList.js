@@ -1,94 +1,30 @@
 import React, {Component} from 'react'
-import {View,ScrollView, Button, FlatList,TouchableOpacity} from 'react-native'
-import {Icon, ListItem, SearchBar} from 'react-native-elements'
+import {View, ScrollView, AlertStatic as Alert} from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
+import { SearchBar} from 'react-native-elements'
+import {List} from "./List/List";
 export default class ContactList extends Component{
     static navigationOptions = ({navigation}) =>( {
-        title: 'Contact List',
-        headerLeft: null,
-        headerRight:(
-            <Button
-                onPress={() => navigation.navigate("ChatList")}
-                title="Chat List"
-            />
-    )});
+        title: 'Contact List'
+    });
 
     state = {
         NameSearch: "",
-        data: [
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"HIHIHI"
-            },
-            {
-                name:"Oliver"
-            },
-            {
-                name:"HIHIHI"
-            },
-
-        ]
+        data: {StaffList:[],TeacherList:[],LearnerList:[]}
     }
 
-    renderSeparator = () => {
-        return (
-            <View
-                style={{
-                    height: 1,
-                    width: "86%",
-                    backgroundColor: "#CED0CE",
-                    marginLeft: "14%"
-                }}
-            />
-        );
-    };
-
-    _renderItem = ({item})=>{
-        return (
-            <TouchableOpacity onPress={()=>{}}>
-                <ListItem
-                    roundAvatar
-                    title={item.name}
-                    containerStyle={{ borderBottomWidth: 0 }}
-                    leftAvatar={{source:{uri: 'https://www.remove.bg/images/samples/combined/s1.jpg'}}}
-                    chevron={true}
-                />
-            </TouchableOpacity>
-        )
+    componentDidMount = async ()=>{
+        const userId = await AsyncStorage.getItem("userid")
+        fetch('http://gradspace.org:5000/api/Chat/GetChattingList/'+userId,{
+            method: 'GET',
+        }).then(res=>{
+            return res.json()
+        }).then(async res=>{
+            if (res.IsSuccess==false){
+                throw new Error(res.ErrorMessage)
+            }
+            this.setState({data:res.Data})
+        })
     }
 
     updateSearch = (text) =>{
@@ -106,12 +42,19 @@ export default class ContactList extends Component{
                 <ScrollView
                     contentContainerStyle={{paddingBottom: 60}}
                     style={{ borderTopWidth: 0, borderBottomWidth: 0}}>
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={this._renderItem}
-                        keyExtractor={item => item.name}
-                        ItemSeparatorComponent={this.renderSeparator}
+                    <List
+                        data={this.state.data.StaffList}
+                        category="staff"
                     />
+                    <List
+                        data={this.state.data.LearnerList}
+                        category="learner"
+                    />
+                    <List
+                        data={this.state.data.TeacherList}
+                        category="teacher"
+                    />
+
                 </ScrollView>
             </View>
         )

@@ -44,7 +44,7 @@ export default class App extends React.Component {
                 // renderFooter={()=>{return (<Text>xxx is typing ...</Text>)}}
                 renderUsernameOnMessage={true}
                 showUserAvatar={true}
-                loadEarlier={true}
+                // loadEarlier={true}
                 placeholder="Type a message..."
                 alwaysShowSend={true}
                 messages={this.state.messages}
