@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import {View, ScrollView, AlertStatic as Alert} from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import { SearchBar} from 'react-native-elements'
 import {List} from "./List/List";
-export default class ContactList extends Component{
+export default class ContactList extends PureComponent{
     static navigationOptions = ({navigation}) =>( {
         title: 'Contact List'
     });
@@ -13,17 +13,9 @@ export default class ContactList extends Component{
         data: {StaffList:[],TeacherList:[],LearnerList:[]}
     }
 
-    componentDidMount = async ()=>{
-        const userId = await AsyncStorage.getItem("userid")
-        fetch('http://gradspace.org:5000/api/Chat/GetChattingList/'+userId,{
-            method: 'GET',
-        }).then(res=>{
-            return res.json()
-        }).then(async res=>{
-            if (res.IsSuccess==false){
-                throw new Error(res.ErrorMessage)
-            }
-            this.setState({data:res.Data})
+    componentDidMount = ()=>{
+        AsyncStorage.getItem("contactList").then(data=>{
+            this.setState({data:JSON.parse(data)})
         })
     }
 

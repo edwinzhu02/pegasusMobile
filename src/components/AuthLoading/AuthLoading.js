@@ -6,12 +6,41 @@ import AsyncStorage from '@react-native-community/async-storage';
 class AuthLoading extends Component{
     constructor(props){
         super(props)
-        this._bootstrapAsync();
+        this.InitializeHandler()
+    }
+
+    InitializeHandler = ()=>{
+        AsyncStorage.getItem("contactList").then(data=>{
+            if (data != null){
+                this._bootstrapAsync()
+            }else{
+                this.GetContactListHandler(data=>{
+                    AsyncStorage.setItem("contactList",JSON.stringify(data))
+                        .then(async ()=>{
+                            this._bootstrapAsync()
+                        })
+                })
+            }
+        })
     }
 
     _bootstrapAsync = async () =>{
         const userToken = await AsyncStorage.getItem('token')
         this.props.navigation.navigate(userToken?'App':'Auth')
+    }
+
+    GetContactListHandler = async (fn) =>{
+        const userId = await AsyncStorage.getItem("userid")
+        fetch('http://gradspace.org:5000/api/Chat/GetChattingList/'+userId,{
+            method: 'GET',
+        }).then(res=>{
+            return res.json()
+        }).then( res=>{
+            if (res.IsSuccess==false){
+                throw new Error(res.ErrorMessage)
+            }
+            fn(res.Data)
+        })
     }
 
 

@@ -1,7 +1,7 @@
-import React,{Component} from 'react'
+import React,{PureComponent} from 'react'
 import {FlatList, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {Item} from "../Item/Item";
-export class List extends Component{
+export class List extends PureComponent{
     _renderItem = ({item})=>{
         return (
             <TouchableOpacity onPress={()=>{}}>
@@ -36,7 +36,7 @@ export class List extends Component{
                 <FlatList
                     data={this.props.data}
                     renderItem={this._renderItem}
-                    keyExtractor={item => item.UserId}
+                    keyExtractor={(item,index) => index.toString()}
                     ItemSeparatorComponent={this.renderSeparator}
                 />
             </View>

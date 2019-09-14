@@ -1,12 +1,16 @@
 import {ListItem} from "react-native-elements";
-import React from "react";
+import React,{PureComponent} from "react";
 
-export const Item = (props)=>(
-    <ListItem
-        roundAvatar
-        title={props.name}
-        containerStyle={{ borderBottomWidth: 0 }}
-        leftAvatar={{source:{uri: props.photo}}}
-        chevron={true}
-    />
-)
+export class Item extends PureComponent{
+    render(){
+        return (
+            <ListItem
+                roundAvatar
+                title={this.props.name}
+                containerStyle={{ borderBottomWidth: 0 }}
+                leftAvatar={{source:{uri: this.props.photo}}}
+                chevron={true}
+            />
+        )
+    }
+}
