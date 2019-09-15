@@ -10,17 +10,28 @@ export default class ContactList extends PureComponent{
 
     state = {
         NameSearch: "",
-        data: {StaffList:[],TeacherList:[],LearnerList:[]}
+        data: {StaffList:[],TeacherList:[],LearnerList:[]},
+        stableData: {StaffList:[],TeacherList:[],LearnerList:[]}
     }
 
     componentDidMount = ()=>{
         AsyncStorage.getItem("contactList").then(data=>{
-            this.setState({data:JSON.parse(data)})
+            this.setState({
+                data:JSON.parse(data),
+                stableData:JSON.parse(data),
+            })
         })
     }
 
     updateSearch = (text) =>{
-        this.setState({NameSearch:text})
+        const data = Object.assign({},this.state.stableData)
+        data.TeacherList = data.TeacherList.filter(s=>s.FirstName.includes(text) || s.LastName.includes(text))
+        data.StaffList = data.StaffList.filter(s=>s.FirstName.includes(text) || s.LastName.includes(text))
+        data.LearnerList = data.LearnerList.filter(s=>s.FirstName.includes(text) || s.LastName.includes(text))
+        this.setState({
+            NameSearch:text,
+            data: data
+        })
     }
 
 
