@@ -11,8 +11,7 @@ import Login from "./src/container/Login/Login";
 import Home from "./src/container/Dashboard/Home/Home";
 import SessionList from "./src/container/Dashboard/Session/SessionList";
 import Profile from "./src/container/Dashboard/Profile/Profile";
-import ChatList from "./src/container/Dashboard/Chat/ChatList/ChatList";
-import ContactList from "./src/container/Dashboard/Chat/ContactList/ContactList";
+import ChatBox from './src/container/Dashboard/Chat/ChatBox/ChatBox'
 import CheckIn from "./src/container/Dashboard/Session/CheckIn/CheckIn";
 import CheckOut from "./src/container/Dashboard/Session/CheckOut/CheckOut";
 import Schedule from "./src/container/Dashboard/Session/Schedule/Schedule";
@@ -62,14 +61,11 @@ const ProfileStack = createStackNavigator({
 });
 
 const ChatStack = createStackNavigator({
-  ChatList: {
-    screen: ChatList
-  },
-  ContactList: {
-    screen: ContactList
+  Chat:{
+    screen: Chat
   },
   ChatBox: {
-    screen: Chat
+    screen: ChatBox
   }
 });
 

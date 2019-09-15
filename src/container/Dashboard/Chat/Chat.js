@@ -1,61 +1,41 @@
-import React from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
-import {
-    Text,
-    View,
-} from 'react-native'
-export default class App extends React.Component {
+import React,{Component} from 'react';
+import {Button,View} from "react-native";
+import ChatList from "./ChatList/ChatList";
+import ContactList from "./ContactList/ContactList";
+export default class Chat extends Component{
     static navigationOptions = ({navigation}) =>( {
-        title: ""
+        title: navigation.getParam("title"),
+        headerRight:(
+            <Button
+                onPress={() =>{
+                    const isChatList = navigation.getParam("isChatList")
+                    navigation.setParams({
+                        isChatList: !isChatList,
+                        title: isChatList?"Contact List":"Chat List"
+                    })
+                }}
+                title={navigation.getParam("isChatList")?"ContactList":"ChatList"}
+            />
+        )
     });
 
-    state = {
-        messages: [],
-    }
-
-    componentWillMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-            ],
+    componentDidMount =() =>{
+        this.props.navigation.setParams({
+            title:"Chat List",
+            isChatList: true
         })
     }
-    onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
-    }
 
-
-
-
-    render() {
+    render(){
         return (
-            <GiftedChat
-                // renderFooter={()=>{return (<Text>xxx is typing ...</Text>)}}
-                renderUsernameOnMessage={true}
-                showUserAvatar={true}
-                // loadEarlier={true}
-                placeholder="Type a message..."
-                alwaysShowSend={true}
-                messages={this.state.messages}
-                onSend={messages => this.onSend(messages)}
-                user={{
-                    _id: 1,
-                    name: 'Oliver',
-                    avatar: 'https://placeimg.com/140/140/any',
-                }}
-            />
-        );
+            <View>
+                {this.props.navigation.getParam("isChatList")?
+                    (<ChatList
+                        navigation={()=>{this.props.navigation.navigate("ChatBox")}}
+                    />)
+                    :
+                    (<ContactList/>)}
+            </View>
+        )
     }
-
 }

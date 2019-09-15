@@ -4,10 +4,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { SearchBar} from 'react-native-elements'
 import {List} from "./List/List";
 export default class ContactList extends PureComponent{
-    static navigationOptions = ({navigation}) =>( {
-        title: 'Contact List'
-    });
-
     state = {
         NameSearch: "",
         data: {StaffList:[],TeacherList:[],LearnerList:[]},

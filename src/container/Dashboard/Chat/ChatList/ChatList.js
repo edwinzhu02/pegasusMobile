@@ -3,16 +3,6 @@ import {View,ScrollView,Text, Button, FlatList,TouchableOpacity} from 'react-nat
 import {Badge, Icon, ListItem,Avatar} from 'react-native-elements'
 
 class ChatList extends Component{
-    static navigationOptions = ({navigation}) =>( {
-        title: 'Chat List',
-        headerRight:(
-            <Button
-                onPress={() => navigation.navigate("ContactList")}
-                title="Contact List"
-            />
-        )
-    });
-
     state = {
         data: [
             {
@@ -76,7 +66,7 @@ class ChatList extends Component{
 
     _renderItem = ({item})=>{
         return (
-            <TouchableOpacity onPress={()=>{this.props.navigation.navigate("ChatBox")}}>
+            <TouchableOpacity onPress={this.props.navigation}>
                 <ListItem
                     roundAvatar
                     title={item.name}
