@@ -40,7 +40,6 @@ class Feedback extends Component {
       },
       () => {
         this.getDataHandler();
-        
       }
     );
   };
@@ -153,8 +152,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => ({
-  IsConfirm: state.CommentConfirm
-});
+const mapStateToProps = state => {
+  return { IsConfirm: state.CommentConfirm };
+};
 
 export default connect(mapStateToProps)(Feedback);
