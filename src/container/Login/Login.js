@@ -39,7 +39,6 @@ export default class Login extends Component {
         return res.json();
       })
       .then(async result => {
-        console.log(result);
         if (result.IsSuccess == false) {
           throw new Error(result.ErrorMessage);
         }
@@ -71,13 +70,14 @@ export default class Login extends Component {
           JSON.stringify(result.Data.userid)
         );
         this.setState({ visible: false });
-        this.props.navigation.navigate("App");
+        this.props.navigation.navigate("AuthLoading");
       })
       .catch(err => {
         this.setState({ visible: false });
         this.ErrorMessageAlert("Login Error", err.toString());
       });
   };
+
 
   render() {
     return (

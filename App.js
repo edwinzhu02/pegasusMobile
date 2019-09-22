@@ -7,23 +7,22 @@ import {
 } from "react-navigation";
 import AuthLoading from "./src/components/AuthLoading/AuthLoading";
 import Icon from "react-native-vector-icons/Ionicons";
-import Login from "./src/components/Login/Login";
-import Home from "./src/components/Dashboard/Home/Home";
-import SessionList from "./src/components/Dashboard/Session/SessionList";
-import Profile from "./src/components/Dashboard/Profile/Profile";
-import ChatList from "./src/components/Dashboard/Chat/ChatList/ChatList";
-import ContactList from "./src/components/Dashboard/Chat/ContactList/ContactList";
-import CheckIn from "./src/components/Dashboard/Session/CheckIn/CheckIn";
-import CheckOut from "./src/components/Dashboard/Session/CheckOut/CheckOut";
-import Schedule from "./src/components/Dashboard/Session/Schedule/Schedule";
-import Feedback from "./src/components/Dashboard/Session/Feedback/Feedback";
-import FeedbackRating from "./src/components/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
-import FeedbackView from "./src/components/Dashboard/Session/FeedbackView/FeedbackView";
-import Chat from "./src/components/Dashboard/Chat/Chat";
-import EventDetail from "./src/components/Dashboard/Home/Events/EventDetail";
-import AvatarDetails from "./src/components/Dashboard/Profile/AvatarPanel/AvatarDetails";
-import PasswordPanel from "./src/components/Dashboard/Profile/PasswordPanel/PasswordPanel";
-import PersonalDetails from "./src/components/Dashboard/Profile/PersonalPanel/PersonalDetails";
+import Login from "./src/container/Login/Login";
+import Home from "./src/container/Dashboard/Home/Home";
+import SessionList from "./src/container/Dashboard/Session/SessionList";
+import Profile from "./src/container/Dashboard/Profile/Profile";
+import ChatBox from './src/container/Dashboard/Chat/ChatBox/ChatBox'
+import CheckIn from "./src/container/Dashboard/Session/CheckIn/CheckIn";
+import CheckOut from "./src/container/Dashboard/Session/CheckOut/CheckOut";
+import Schedule from "./src/container/Dashboard/Session/Schedule/Schedule";
+import Feedback from "./src/container/Dashboard/Session/Feedback/Feedback";
+import FeedbackRating from "./src/container/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
+import FeedbackView from "./src/container/Dashboard/Session/FeedbackView/FeedbackView";
+import Chat from "./src/container/Dashboard/Chat/Chat";
+import EventDetail from "./src/container/Dashboard/Home/Events/EventDetail";
+import AvatarDetails from "./src/container/Dashboard/Profile/AvatarPanel/AvatarDetails";
+import PasswordPanel from "./src/container/Dashboard/Profile/PasswordPanel/PasswordPanel";
+import PersonalDetails from "./src/container/Dashboard/Profile/PersonalPanel/PersonalDetails";
 
 const SessionStack = createStackNavigator({
   SessionList: SessionList,
@@ -56,22 +55,30 @@ const ProfileStack = createStackNavigator({
   PersonalDetails: {
     screen: PersonalDetails,
     navigationOptions: ({ navigation }) => ({
-      title: "PersonalDetails"
+      title: "PersonalDetails",
     })
   }
 });
 
 const ChatStack = createStackNavigator({
-  ChatList: {
-    screen: ChatList
-  },
-  ContactList: {
-    screen: ContactList
+  Chat:{
+    screen: Chat
   },
   ChatBox: {
-    screen: Chat
+    screen: ChatBox
   }
 });
+
+ChatStack.navigationOptions = ({navigation}) =>{
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
 
 const HomeStack = createStackNavigator({
   Home: Home,
@@ -83,8 +90,8 @@ const AppStack = createBottomTabNavigator({
     screen: HomeStack,
     navigationOptions: {
       tabBarLabel: "Home",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-home" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-home" color={tintColor} size={24}/>
       )
     }
   },
@@ -92,8 +99,8 @@ const AppStack = createBottomTabNavigator({
     screen: SessionStack,
     navigationOptions: {
       tabBarLabel: "Session",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-calendar" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-calendar" color={tintColor} size={24}/>
       )
     }
   },
@@ -101,8 +108,8 @@ const AppStack = createBottomTabNavigator({
     screen: ChatStack,
     navigationOptions: {
       taBarLabel: "Chat",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-chatboxes" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-chatboxes" color={tintColor} size={24}/>
       )
     }
   },
@@ -110,8 +117,8 @@ const AppStack = createBottomTabNavigator({
     screen: ProfileStack,
     navigationOptions: {
       tabBarLabel: "Profile",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="md-person" color={tintColor} size={24} />
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="md-person" color={tintColor} size={24}/>
       )
     }
   }
