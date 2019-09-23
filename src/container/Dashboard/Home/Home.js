@@ -3,7 +3,9 @@ import { View, Button, StyleSheet, Text, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import CarouselView from "./Carousel/CarouselView";
 import EventsListView from "./Events/EventsListView";
-console.disableYellowBox = true
+import "../../../util/global_config";
+
+console.disableYellowBox = true;
 class Home extends Component {
   static navigationOptions = {
     headerTitle: "Home"
@@ -12,7 +14,8 @@ class Home extends Component {
     super(props);
     this.state = {
       firstname: null,
-      lastname: null
+      lastname: null,
+      dataList: []
     };
   }
 
@@ -25,6 +28,11 @@ class Home extends Component {
       firstname: await AsyncStorage.getItem("firstname"),
       lastname: await AsyncStorage.getItem("lastname")
     });
+    let response = await fetch(global.constants.basic_url + "News");
+    let data = await response.json();
+    this.setState({ dataList: data.Data }, () =>
+      console.log(this.state.dataList)
+    );
   };
 
   render() {
@@ -32,10 +40,16 @@ class Home extends Component {
       <ScrollView>
         <View style={styles.container}>
           <View style={{ flex: 1 }}>
-            <CarouselView navigation={this.props.navigation} />
+            <CarouselView
+              navigation={this.props.navigation}
+              dataList={this.state.dataList}
+            />
           </View>
           <View style={{ flex: 1 }}>
-            <EventsListView navigation={this.props.navigation} />
+            <EventsListView
+              navigation={this.props.navigation}
+              dataList={this.state.dataList}
+            />
           </View>
         </View>
       </ScrollView>
