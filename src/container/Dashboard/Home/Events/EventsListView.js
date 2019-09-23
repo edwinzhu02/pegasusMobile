@@ -21,10 +21,6 @@ class EventsListView extends Component {
             <View style={{ flexDirection: "row", height: this.itemHeight }}>
               <Image
                 source={{ uri: el.TitleUrl }}
-                // source={{
-                //   uri:
-                //     "http://gradspace.org:5000/images/news/titlePhoto/1190923031308730.JPG"
-                // }}
                 style={{
                   width: this.itemHeight * 0.85 * 1.618,
                   height: this.itemHeight * 0.85,
