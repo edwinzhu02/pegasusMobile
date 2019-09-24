@@ -29,10 +29,13 @@ class Home extends Component {
       lastname: await AsyncStorage.getItem("lastname")
     });
     let response = await fetch(global.constants.basic_url + "News");
+    console.log(response);
     let data = await response.json();
-    this.setState({ dataList: data.Data }, () =>
-      console.log(this.state.dataList)
-    );
+    this.setState({
+      dataList: data.Data.sort((a, b) => {
+        return Date.parse(b.CreatedAt) - Date.parse(a.CreatedAt);
+      })
+    });
   };
 
   render() {
@@ -42,7 +45,11 @@ class Home extends Component {
           <View style={{ flex: 1 }}>
             <CarouselView
               navigation={this.props.navigation}
-              dataList={this.state.dataList}
+              dataList={
+                this.state.dataList.length > 5
+                  ? this.state.dataList.slice(0, 5)
+                  : this.state.dataList
+              }
             />
           </View>
           <View style={{ flex: 1 }}>
