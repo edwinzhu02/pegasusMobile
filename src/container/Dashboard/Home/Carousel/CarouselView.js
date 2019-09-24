@@ -5,7 +5,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 
 class CarouselView extends Component {
   state = {
-    activeSlide: 2
+    activeSlide: 0
   };
 
   width = Dimensions.get("window").width;
@@ -56,7 +56,6 @@ class CarouselView extends Component {
   }
 
   render() {
-    //bug: 一开始渲染出来的是第三个 划的时候会跳到第一个 现在把第三个设置成first item 但是一开始只能向后划
     return (
       <View>
         <Carousel
@@ -65,9 +64,9 @@ class CarouselView extends Component {
           sliderWidth={this.width}
           itemWidth={this.width}
           loop={true}
-          loopClonesPerSide={6}
+          loopClonesPerSide={5}
           autoplay={true}
-          firstItem={3}
+          firstItem={1}
           onSnapToItem={index => {
             this.setState({ activeSlide: index });
             console.log(index);
