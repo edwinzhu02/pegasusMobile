@@ -6,6 +6,7 @@ import EventsListView from "./Events/EventsListView";
 import "../../../util/global_config";
 
 console.disableYellowBox = true;
+
 class Home extends Component {
   static navigationOptions = {
     headerTitle: "Home"
@@ -18,6 +19,8 @@ class Home extends Component {
       dataList: []
     };
   }
+
+
 
   componentDidMount = () => {
     this.loadData();

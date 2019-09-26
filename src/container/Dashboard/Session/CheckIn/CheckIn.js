@@ -62,11 +62,11 @@ export default class CheckIn extends Component {
       //Setting the value of the date time
       dateTime: date + "/" + month + "/" + year + " " + hours + ":" + min
     });
-    this.getGeoLocation();
+    // this.getGeoLocation();
   };
 
   componentWillUnmount = () => {
-    navigator.geolocation.clearWatch(this._watchId);
+    // navigator.geolocation.clearWatch(this._watchId);
   };
 
   getGeoLocation = () => {

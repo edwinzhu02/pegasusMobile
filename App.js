@@ -18,7 +18,8 @@ import Schedule from "./src/container/Dashboard/Session/Schedule/Schedule";
 import Feedback from "./src/container/Dashboard/Session/Feedback/Feedback";
 import FeedbackRating from "./src/container/Dashboard/Session/Feedback/FeedbackRating/FeedbackRating";
 import FeedbackView from "./src/container/Dashboard/Session/FeedbackView/FeedbackView";
-import Chat from "./src/container/Dashboard/Chat/Chat";
+import ChatList from "./src/container/Dashboard/Chat/ChatList/ChatList";
+import ContactList from "./src/container/Dashboard/Chat/ContactList/ContactList";
 import EventDetail from "./src/container/Dashboard/Home/Events/EventDetail";
 import AvatarDetails from "./src/container/Dashboard/Profile/AvatarPanel/AvatarDetails";
 import PasswordPanel from "./src/container/Dashboard/Profile/PasswordPanel/PasswordPanel";
@@ -60,16 +61,35 @@ const ProfileStack = createStackNavigator({
   }
 });
 
-const ChatStack = createStackNavigator({
-  Chat:{
-    screen: Chat
+const ChatListStack = createStackNavigator({
+  ChatList:{
+    screen: ChatList
   },
   ChatBox: {
     screen: ChatBox
   }
 });
 
-ChatStack.navigationOptions = ({navigation}) =>{
+const ContactListStack = createStackNavigator({
+  ContactList:{
+    screen: ContactList
+  },
+  ChatBox:{
+    screen: ChatBox
+  }
+})
+ContactListStack.navigationOptions = ({navigation}) =>{
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+  };
+};
+
+ChatListStack.navigationOptions = ({navigation}) =>{
   let tabBarVisible = true;
   if (navigation.state.index > 0) {
     tabBarVisible = false;
@@ -104,12 +124,21 @@ const AppStack = createBottomTabNavigator({
       )
     }
   },
-  Chat: {
-    screen: ChatStack,
+  ChatList: {
+    screen: ChatListStack,
     navigationOptions: {
-      taBarLabel: "Chat",
+      taBarLabel: "Chat List",
       tabBarIcon: ({tintColor}) => (
           <Icon name="ios-chatboxes" color={tintColor} size={24}/>
+      )
+    }
+  },
+  ContactList:{
+    screen: ContactListStack,
+    navigationOptions:{
+      taBarLabel: "Contact List",
+      tabBarIcon: ({tintColor}) => (
+          <Icon name="ios-contacts" color={tintColor} size={24}/>
       )
     }
   },
